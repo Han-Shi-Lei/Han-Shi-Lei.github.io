@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>用栈、递归实现二叉树的前序、中序、后序遍历lovemonths</title>
+  <title>Linux基本操作指令lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -109,8 +109,8 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>用栈、递归实现二叉树的前序、中序、后序遍历</h4>
-    <time datetime="2019-04-17T13:26:51.000Z"><i class="fa fa-clock-o"></i>2019-04-17</time>
+    <h4>Linux基本操作指令</h4>
+    <time datetime="2019-04-23T11:50:10.000Z"><i class="fa fa-clock-o"></i>2019-04-23</time>
     
     
     
@@ -122,137 +122,118 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <p>##题目一：二叉树的前序遍历</p>
-<p>给定一个二叉树，返回它的前序遍历<br>示例：<br>输入: [1,null,2,3]<br>1</p>
-<p>2<br>/<br>3</p>
-<p>输出: [1,2,3]<br>代码实现如下：</p>
-<p><code>/**</code></p>
+                <p><strong>一. 目录操作命令</strong></p>
+<p><strong>1.列目录内容（ls）</strong></p>
+<p>1）功能和用法</p>
+<p>ls（list）的功能是列指定目录的内容，并将输出按某种方式排序。若不指定目录，则默认为当前目录。</p>
+<p>​                 <code>ls [options][files]</code></p>
+<p>2)  参数说明</p>
+<p>ls的部分命令参数如下表：</p>
 <ul>
-<li><p><code>Definition for a binary tree node.</code></p>
-</li>
-<li><p><code>struct TreeNode {</code></p>
-</li>
-<li><p><code>int val;</code></p>
-</li>
-<li><p><code>TreeNode *left;</code></p>
-</li>
-<li><p><code>TreeNode *right;</code></p>
-</li>
-<li><p><code>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</code></p>
-</li>
-<li><p><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; preorderTraversal(TreeNode* root) {</code></p>
-<pre><code>stack&lt;TreeNode*&gt; st;
-vector&lt;int&gt; v;
-if(root == nullptr){
-    return v;
-}
-if(root != nullptr){
-    //先将跟压到栈中
-    st.push(root);
-    while(!st.empty()){
-        TreeNode* cur = st.top();
-        //取出根并将根尾插到vector中
-        v.push_back(cur-&gt;val);
-        st.pop();
-        //先将cur-&gt;right压到栈中
-        if(cur-&gt;right){
-            st.push(cur-&gt;right);
-        }
-        //再将cur-&gt;left压到栈中，此时cur-&gt;left再栈顶，下次取出
-        //cur-&gt;left尾插到vector中，当左子树全部被取完，然后取右子
-        //树
-        if(cur-&gt;left){
-            st.push(cur-&gt;left);
-        }
-    }
-}
-return v;
-</code></pre><p> <code>}</code><br> <code>};</code></p>
-<p> ##题目二：二叉树的中序遍历</p>
-</li>
+<li>-a 列出目录下的所有文件，包括以 . 开头的隐含文件。 </li>
+<li>-d 将目录象文件一样显示，而不是显示其下的文件。 如：ls –d 指定目录 </li>
+<li>-i 输出文件的 i 节点的索引信息。 如 ls –ai 指定文件 </li>
+<li>-k 以 k 字节的形式表示文件的大小。ls –alk 指定文件 </li>
+<li>-l 列出文件的详细信息。 </li>
+<li>-n 用数字的 UID,GID 代替名称。</li>
+<li>-F 在每个文件名后附上一个字符以说明该文件的类型，“*”表示可执行的普通文件；“/”表示目录；“@”表 示符号链接；“|”表示FIFOs；“=”表示套接字(sockets)。（目录类型识别） </li>
+<li>-r 对目录反向排序。 </li>
+<li>-t 以时间排序。 </li>
+<li>-s 在l文件名后输出该文件的大小。（大小排序，如何找到目录下大的文件） </li>
+<li>-1 一行只输出一个文件。 </li>
 </ul>
-<p>给定一个二叉树，返回它的中序遍历。<br>示例：<br>输入: [1,null,2,3]<br>1</p>
-<p>2<br>/<br>3</p>
-<p>输出: [1,3,2]<br>代码实现如下：</p>
-<p><code>/**</code></p>
-<ul>
-<li><code>Definition for a binary tree node.</code></li>
-<li><code>struct TreeNode {</code></li>
-<li><code>int val;</code></li>
-<li><code>TreeNode *left;</code></li>
-<li><code>TreeNode *right;</code></li>
-<li><code>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</code></li>
-<li><p><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; inorderTraversal(TreeNode* root) {</code></p>
-<pre><code>stack&lt;TreeNode*&gt; st;
-vector&lt;int&gt; v;
-TreeNode* p = root;
-if(nullptr == root){
-    return v;
-}
-if(nullptr != root){
-    while(p != nullptr || !st.empty()){
-        //p不为空，压入栈中，p走左子树，将左子树全部压到栈中
-        while(p != nullptr){
-            //先压根
-            st.push(p);
-            p = p-&gt;left;
-        }
-        //取出栈顶元素给p，并将栈顶元素取出插入到vector中
-         p = st.top();
-        v.push_back(p-&gt;val);
-        st.pop();
-        //取出p-&gt;right压到栈中
-        p = p-&gt;right;
-    }
-}
-return v;
-</code></pre><p> <code>}</code><br> <code>};</code></p>
-<p> ##题目三：二叉树的后序遍历</p>
-</li>
-</ul>
-<p>给定一个二叉树,返回它的后序遍历。<br>示例：<br>输入: [1,null,2,3]<br>1</p>
-<p>2<br>/<br>3</p>
-<p>输出: [3,2,1]<br>用两个栈和递归实现二叉树的后续遍历。<br>代码实现如下：</p>
-<p><code>/**</code></p>
-<ul>
-<li><code>Definition for a binary tree node.</code></li>
-<li><code>struct TreeNode {</code></li>
-<li><code>int val;</code></li>
-<li><code>TreeNode *left;</code></li>
-<li><code>TreeNode *right;</code></li>
-<li><code>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</code></li>
-<li><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; postorderTraversal(TreeNode* root) {</code><pre><code>stack&lt;TreeNode*&gt; s1;
-stack&lt;TreeNode*&gt; s2;
-vector&lt;int&gt; res;
-if(!root){
-    return res;
-}
-s1.push(root);
-while(!s1.empty()){
-    TreeNode* cur = s1.top();
-    s1.pop();
-    s2.push(cur);
-    //先将left压到栈里，再将right压到栈里，然后取出将右子树压到s2
-    //中，最后再压左子树
-    //待右子树全部压完，然后将左子树全部压到栈s2中
-    //此时栈s2从上到下依次是左子树、右子树、根
-    if(cur-&gt;left){
-        s1.push(cur-&gt;left);
-    }
-    //后压右子树，然后全部将有子树压到栈s2中
-    if(cur-&gt;right){
-        s1.push(cur-&gt;right);
-    }
-}
-while(!s2.empty()){
-    //弹出s2栈顶元素，依次尾插到vector中，最终得到二叉树的后序
-    //遍历
-    res.push_back(s2.top()-&gt;val);
-    s2.pop();
-}
-return res;
-</code></pre> <code>}</code><br> <code>};</code></li>
-</ul>
+<p>3)  举例</p>
+<p>​                <code>ls -1</code></p>
+<p><strong>2.建立目录（mkdir）</strong></p>
+<p>1）功能与用法</p>
+<p>​        mkdir（make directory)命令的功能是创建子目录，一次可以创建一个或多个子目录，还可以一次去创建包括全部父目录和子目录在内的一个完整的目录结构，它的使用受权限的制约。mkdir的用法为：</p>
+<p>​          <code>mkdir [-p][-m MODE] dirs</code></p>
+<p>2)   参数说明</p>
+<p>​      -p：如果要创建的目录存在也不报错，则必要时可一同创建父目录。-m，–mode=MODE：按照权限MODE创建子目录。</p>
+<p>3）举例</p>
+<p>​       <code>$mkdir  temp        #在工作目录下，建立一个名为temp的子目录</code></p>
+<p>​       <code>$mkdir temp1 temp2 temp3     #一次创建多个目录</code></p>
+<p>​       <code>$mkdir  -p  temp4/child    #在temp4下创建子目录child，没有-p参数，父目录如果不存在，</code></p>
+<p>​       <code>#将导致创建失败</code></p>
+<p><strong>3.改变工作目录</strong></p>
+<p>​       cd（change directory)命令是改变用户的当前工作目录。它的使用受权限制约，用户必须对要进入的目录有执行权。其用法为：</p>
+<p>​                  <code>cd  [dir]</code></p>
+<p><strong>4.显示当前目录（pwd）</strong></p>
+<p>​    pwd（print working directory)命令的功能是显示当前目录。其用法为：</p>
+<p>​                <code>pwd[-P][-L]</code></p>
+<p>选项-P,-L分别显示当前目录的物理和逻辑位置，默认为后者。</p>
+<p><strong>二. 文件操作基本命令</strong></p>
+<p><strong>1.显示文件的内容或合并文件（cat）</strong></p>
+<p>1) 功能和用法</p>
+<p>​        cat（catenate）命令用来把文件内容显示到屏幕上，也可以同时显示多个文件。当不带参数运行cat时使用标准输入。使用cat通过I/O重定向的方法将多个文件的显示内容改到某个文件中，从而实现文件合并。cat的用法为：</p>
+<p>​            <code>cat [options][files]</code></p>
+<p>2) 举例</p>
+<p>​            <code>$cat -n test.txt   #显示文件test.txt的内容，并为所有行添加行号</code></p>
+<p><strong>2.浏览文件(less)</strong></p>
+<p>​    less 命令和more一样都有分页处理命令，但less比more功能更强大。它可以使用PgUp和PgUn翻页，使用HOME和END直接跳到文件开始或结尾。</p>
+<p>​     less命令是许多程序的（如man）等使用的默认的分页处理命令。如果想阅读压缩文件，它会调用less命令来处理。</p>
+<p><strong>3.文件移动或更名（mv）</strong></p>
+<p>1）功能和用法</p>
+<p>mv（move）命令的功能是文件位置移动或更名。其用法为：</p>
+<p>​         mv [options]  source  dest</p>
+<p>​         mv [options]  source … directory</p>
+<p>​         第一种用法是将源文件移动到目的文件，可用于文件移动或更名；第二种用法是将一批文件移动到某个目录directory。mv命令是有副作用的，但可以通过备份的方式避免。</p>
+<p>​         mv 至少需要两个参数，一个用于源文件，另一个是目标文件或位置，若目标为当前目录可用</p>
+<p>“ . ”表示，但不能省略。</p>
+<p>2）举例</p>
+<p>​       <code>$mv file1 file2        #若file2存在，则在不使用备份时将被覆盖</code></p>
+<p>​       <code>$mv myfile /tmp/tmpf    #将myfile移动至/tmp/tmpf 下或更名为/tmp/tmpf</code></p>
+<p>​       <code>$mv file1 file2 mydir       #将文件file1，file2移动到目录mydir下</code></p>
+<p>​       <code>$mv  -bf  -V&quot;t&quot; file1 file2 mydir #以备份方式移动文件</code></p>
+<p><strong>4.文件和目录复制（cp）</strong></p>
+<p>1）功能和用法</p>
+<p>​        cp（copy）命令的功能是文件目录复制。不能复制设备文件，但却可复制设备文件的内容以构造映像。其用法为：</p>
+<p>​         <code>cp [options]  source  dest</code></p>
+<p>​         <code>cp [options]  source ... directory</code></p>
+<p>​         第一种用法是将源文件移动到目的文；第二种用法是将一批文件复制到某个目录directory。cp命令也有副作用的，但可以通过备份的方式避免。</p>
+<p>​         cp 至少需要两个参数，一个用于源文件，另一个是目标文件或位置，若目标为当前目录可用</p>
+<p>“ . ”表示，但不能省略。</p>
+<p>2）举例</p>
+<p>​           <code>$cp file1 file2       #将文件file1复制到file2，默认采用交互方式</code></p>
+<p>​           <code>$cp /tmp/myp.c .    #将文件/tmp/myp.c 复制到当前目录</code></p>
+<p>​           <code>$cp  file1 /tmp/file2 #将文件复制到/tmp并更名为file2</code></p>
+<p>​           <code>$cp -rp file1 file2 #将文件file复制到目录file2中，且保持原有属性</code> </p>
+<p><strong>5.修改文件存取时间或创建空文件（touch）</strong></p>
+<p>1）功能和用法</p>
+<p>​       touch命令的功能有两点：一是建立空文件；二是更新文件的存取时间。默认时，将文件属性中的3个时间都修改为系统的当前时间。若指定文件不存在，则创建空文件。</p>
+<p>2）举例</p>
+<p>​          <code>$touch myfile          #将文件的访问时间等改为当前时间，若不存在则创建</code></p>
+<p>​          <code>$touch -a -t 200601020030 myfile yourfile  #修改文件的存取时间</code></p>
+<p>​          <code>$touch -m -t 200706050403 myfile  #修改文件的修改时间</code></p>
+<p><strong>6.rmdir指令 &amp;&amp; rm 指令</strong></p>
+<p>rmdir是一个与mkdir相对应的命令。mkdir是建立目录，而rmdir是删除命令。 </p>
+<p>1)rm命令的使用方式：</p>
+<p>​          <code>rm [options] files</code></p>
+<p>2)举例</p>
+<p>​               <code>$rm -rf  file       #强制删除</code></p>
+<p>​               <code>$rm -r file         #递归删除</code></p>
+<p><strong>7.man指令</strong></p>
+<p>查手册指令</p>
+<p>举例：</p>
+<p>​                <code>$ man  open</code></p>
+<p><strong>8.清屏指令</strong></p>
+<p>​       clear  或者  CTRL  L</p>
+<p><strong>9.字符串或变量输出指令（echo）</strong></p>
+<p>1）功能与用法</p>
+<p>​      echo命令将其命令行参数中的字符串或变量的值写到标准输出。默认情况下，每个echo命令执行完毕后会产生一个换行符，如果不带参数执行此命令，将输出一个空行。echo命令的使用方式为：</p>
+<p>​               <code>echo [options] string ...</code></p>
+<p>2)举例</p>
+<p>​            <code>$echo &quot;my name is Bill Joy&quot;    #以上命令的输出在同一行上</code></p>
+<p>​            <code>$echo -n &quot;my name is Bill Joy&quot;   #不处理换行</code></p>
+<p><strong>10.日期与时间管理指令</strong></p>
+<p>1）功能与用法</p>
+<p>date命令的用法为：</p>
+<p>​      <code>date [options][+FORMAT]</code></p>
+<p>​       <code>date[-u|--utc|--universal][MMDDhhmm][[CC]YY][.ss]</code></p>
+<p>2) 举例</p>
+<p>​       <code>$date     #以默认格式显示系统的当前时间</code></p>
+<p>​       <code>$date 05311010  #设置系统的当前时间为当年5月31日10:10:00</code></p>
+<p>​       <code>$date -s  &quot;+2 mintes&quot;    #将系统的时间前提两分</code></p>
 
             
         </section>
@@ -260,7 +241,7 @@ return res;
         
 			
 				
-			<a href="/tags/C/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">C++</a>
+			<a href="/tags/Linux/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">Linux</a>
 				
 			
 		
@@ -270,10 +251,10 @@ return res;
     	
     	
 		
-			<a href="/2019/04/23/继承/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="C++继承">上一篇</a>
-		
 
 		
+		
+			<a href="/2019/04/23/继承/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="C++继承">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -376,7 +357,7 @@ return res;
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/17/newpapername/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/23/linux基本操作指令/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>
