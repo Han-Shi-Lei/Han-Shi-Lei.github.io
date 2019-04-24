@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>Linux基本操作指令lovemonths</title>
+  <title>C++多态lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -111,13 +111,13 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>Linux基本操作指令</h4>
-    <time datetime="2019-04-23T11:50:10.000Z"><i class="fa fa-clock-o"></i>2019-04-23</time>
+    <h4>C++多态</h4>
+    <time datetime="2019-04-24T12:26:45.000Z"><i class="fa fa-clock-o"></i>2019-04-24</time>
     
     
     <span>
         <i class="fa fa-eye"></i>
-        <span id="/2019/04/23/linux基本操作指令/" class="views views-post" title="Linux基本操作指令"></span>
+        <span id="/2019/04/24/多态/" class="views views-post" title="C++多态"></span>
     </span>
     
     
@@ -129,118 +129,81 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <p><strong>一. 目录操作命令</strong></p>
-<p><strong>1.列目录内容（ls）</strong></p>
-<p>1）功能和用法</p>
-<p>ls（list）的功能是列指定目录的内容，并将输出按某种方式排序。若不指定目录，则默认为当前目录。</p>
-<p>​                 <code>ls [options][files]</code></p>
-<p>2)  参数说明</p>
-<p>ls的部分命令参数如下表：</p>
-<ul>
-<li>-a 列出目录下的所有文件，包括以 . 开头的隐含文件。 </li>
-<li>-d 将目录象文件一样显示，而不是显示其下的文件。 如：ls –d 指定目录 </li>
-<li>-i 输出文件的 i 节点的索引信息。 如 ls –ai 指定文件 </li>
-<li>-k 以 k 字节的形式表示文件的大小。ls –alk 指定文件 </li>
-<li>-l 列出文件的详细信息。 </li>
-<li>-n 用数字的 UID,GID 代替名称。</li>
-<li>-F 在每个文件名后附上一个字符以说明该文件的类型，“*”表示可执行的普通文件；“/”表示目录；“@”表 示符号链接；“|”表示FIFOs；“=”表示套接字(sockets)。（目录类型识别） </li>
-<li>-r 对目录反向排序。 </li>
-<li>-t 以时间排序。 </li>
-<li>-s 在l文件名后输出该文件的大小。（大小排序，如何找到目录下大的文件） </li>
-<li>-1 一行只输出一个文件。 </li>
-</ul>
-<p>3)  举例</p>
-<p>​                <code>ls -1</code></p>
-<p><strong>2.建立目录（mkdir）</strong></p>
-<p>1）功能与用法</p>
-<p>​        mkdir（make directory)命令的功能是创建子目录，一次可以创建一个或多个子目录，还可以一次去创建包括全部父目录和子目录在内的一个完整的目录结构，它的使用受权限的制约。mkdir的用法为：</p>
-<p>​          <code>mkdir [-p][-m MODE] dirs</code></p>
-<p>2)   参数说明</p>
-<p>​      -p：如果要创建的目录存在也不报错，则必要时可一同创建父目录。-m，–mode=MODE：按照权限MODE创建子目录。</p>
-<p>3）举例</p>
-<p>​       <code>$mkdir  temp        #在工作目录下，建立一个名为temp的子目录</code></p>
-<p>​       <code>$mkdir temp1 temp2 temp3     #一次创建多个目录</code></p>
-<p>​       <code>$mkdir  -p  temp4/child    #在temp4下创建子目录child，没有-p参数，父目录如果不存在，</code></p>
-<p>​       <code>#将导致创建失败</code></p>
-<p><strong>3.改变工作目录</strong></p>
-<p>​       cd（change directory)命令是改变用户的当前工作目录。它的使用受权限制约，用户必须对要进入的目录有执行权。其用法为：</p>
-<p>​                  <code>cd  [dir]</code></p>
-<p><strong>4.显示当前目录（pwd）</strong></p>
-<p>​    pwd（print working directory)命令的功能是显示当前目录。其用法为：</p>
-<p>​                <code>pwd[-P][-L]</code></p>
-<p>选项-P,-L分别显示当前目录的物理和逻辑位置，默认为后者。</p>
-<p><strong>二. 文件操作基本命令</strong></p>
-<p><strong>1.显示文件的内容或合并文件（cat）</strong></p>
-<p>1) 功能和用法</p>
-<p>​        cat（catenate）命令用来把文件内容显示到屏幕上，也可以同时显示多个文件。当不带参数运行cat时使用标准输入。使用cat通过I/O重定向的方法将多个文件的显示内容改到某个文件中，从而实现文件合并。cat的用法为：</p>
-<p>​            <code>cat [options][files]</code></p>
-<p>2) 举例</p>
-<p>​            <code>$cat -n test.txt   #显示文件test.txt的内容，并为所有行添加行号</code></p>
-<p><strong>2.浏览文件(less)</strong></p>
-<p>​    less 命令和more一样都有分页处理命令，但less比more功能更强大。它可以使用PgUp和PgUn翻页，使用HOME和END直接跳到文件开始或结尾。</p>
-<p>​     less命令是许多程序的（如man）等使用的默认的分页处理命令。如果想阅读压缩文件，它会调用less命令来处理。</p>
-<p><strong>3.文件移动或更名（mv）</strong></p>
-<p>1）功能和用法</p>
-<p>mv（move）命令的功能是文件位置移动或更名。其用法为：</p>
-<p>​         mv [options]  source  dest</p>
-<p>​         mv [options]  source … directory</p>
-<p>​         第一种用法是将源文件移动到目的文件，可用于文件移动或更名；第二种用法是将一批文件移动到某个目录directory。mv命令是有副作用的，但可以通过备份的方式避免。</p>
-<p>​         mv 至少需要两个参数，一个用于源文件，另一个是目标文件或位置，若目标为当前目录可用</p>
-<p>“ . ”表示，但不能省略。</p>
-<p>2）举例</p>
-<p>​       <code>$mv file1 file2        #若file2存在，则在不使用备份时将被覆盖</code></p>
-<p>​       <code>$mv myfile /tmp/tmpf    #将myfile移动至/tmp/tmpf 下或更名为/tmp/tmpf</code></p>
-<p>​       <code>$mv file1 file2 mydir       #将文件file1，file2移动到目录mydir下</code></p>
-<p>​       <code>$mv  -bf  -V&quot;t&quot; file1 file2 mydir #以备份方式移动文件</code></p>
-<p><strong>4.文件和目录复制（cp）</strong></p>
-<p>1）功能和用法</p>
-<p>​        cp（copy）命令的功能是文件目录复制。不能复制设备文件，但却可复制设备文件的内容以构造映像。其用法为：</p>
-<p>​         <code>cp [options]  source  dest</code></p>
-<p>​         <code>cp [options]  source ... directory</code></p>
-<p>​         第一种用法是将源文件移动到目的文；第二种用法是将一批文件复制到某个目录directory。cp命令也有副作用的，但可以通过备份的方式避免。</p>
-<p>​         cp 至少需要两个参数，一个用于源文件，另一个是目标文件或位置，若目标为当前目录可用</p>
-<p>“ . ”表示，但不能省略。</p>
-<p>2）举例</p>
-<p>​           <code>$cp file1 file2       #将文件file1复制到file2，默认采用交互方式</code></p>
-<p>​           <code>$cp /tmp/myp.c .    #将文件/tmp/myp.c 复制到当前目录</code></p>
-<p>​           <code>$cp  file1 /tmp/file2 #将文件复制到/tmp并更名为file2</code></p>
-<p>​           <code>$cp -rp file1 file2 #将文件file复制到目录file2中，且保持原有属性</code> </p>
-<p><strong>5.修改文件存取时间或创建空文件（touch）</strong></p>
-<p>1）功能和用法</p>
-<p>​       touch命令的功能有两点：一是建立空文件；二是更新文件的存取时间。默认时，将文件属性中的3个时间都修改为系统的当前时间。若指定文件不存在，则创建空文件。</p>
-<p>2）举例</p>
-<p>​          <code>$touch myfile          #将文件的访问时间等改为当前时间，若不存在则创建</code></p>
-<p>​          <code>$touch -a -t 200601020030 myfile yourfile  #修改文件的存取时间</code></p>
-<p>​          <code>$touch -m -t 200706050403 myfile  #修改文件的修改时间</code></p>
-<p><strong>6.rmdir指令 &amp;&amp; rm 指令</strong></p>
-<p>rmdir是一个与mkdir相对应的命令。mkdir是建立目录，而rmdir是删除命令。 </p>
-<p>1)rm命令的使用方式：</p>
-<p>​          <code>rm [options] files</code></p>
-<p>2)举例</p>
-<p>​               <code>$rm -rf  file       #强制删除</code></p>
-<p>​               <code>$rm -r file         #递归删除</code></p>
-<p><strong>7.man指令</strong></p>
-<p>查手册指令</p>
-<p>举例：</p>
-<p>​                <code>$ man  open</code></p>
-<p><strong>8.清屏指令</strong></p>
-<p>​       clear  或者  CTRL  L</p>
-<p><strong>9.字符串或变量输出指令（echo）</strong></p>
-<p>1）功能与用法</p>
-<p>​      echo命令将其命令行参数中的字符串或变量的值写到标准输出。默认情况下，每个echo命令执行完毕后会产生一个换行符，如果不带参数执行此命令，将输出一个空行。echo命令的使用方式为：</p>
-<p>​               <code>echo [options] string ...</code></p>
-<p>2)举例</p>
-<p>​            <code>$echo &quot;my name is Bill Joy&quot;    #以上命令的输出在同一行上</code></p>
-<p>​            <code>$echo -n &quot;my name is Bill Joy&quot;   #不处理换行</code></p>
-<p><strong>10.日期与时间管理指令</strong></p>
-<p>1）功能与用法</p>
-<p>date命令的用法为：</p>
-<p>​      <code>date [options][+FORMAT]</code></p>
-<p>​       <code>date[-u|--utc|--universal][MMDDhhmm][[CC]YY][.ss]</code></p>
-<p>2) 举例</p>
-<p>​       <code>$date     #以默认格式显示系统的当前时间</code></p>
-<p>​       <code>$date 05311010  #设置系统的当前时间为当年5月31日10:10:00</code></p>
-<p>​       <code>$date -s  &quot;+2 mintes&quot;    #将系统的时间前提两分</code></p>
+                <p><strong>一.什么是多态</strong></p>
+<p>​         按字面的意思就是多种形态。当类之间存在层次结构，并且类之间是通过继承关联时，就会用到多态。C++ 多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。</p>
+<p><strong>二.多态的定义与实现</strong></p>
+<p>1.定义的构成条件</p>
+<p>1）调用函数的对象必须是指针或者引用。</p>
+<p>2）被调用的函数必须是虚函数，且完成了虚函数的重写。</p>
+<p><em>非多态看类型    多态看对象</em></p>
+<p><u>什么是虚函数？</u></p>
+<p>答：在类的成员函数前面加上virtual关键字。</p>
+<p><u>什么是虚函数重写？</u></p>
+<p>答：派生类中有一个跟基类的完全相同虚函数，我们就称子类的虚函数重写了基类的虚函数，完<br>全相同是指：函数名、参数、返回值都相同。另外虚函数的重写也叫作虚函数的覆盖。</p>
+<p><strong>例子：</strong></p>
+<p><code>class Person {</code><br><code>public:</code><br>        <code>virtual void BuyTicket() { cout &lt;&lt; &quot;买票-全价&quot; &lt;&lt; endl; }</code><br><code>};</code><br><code>class Student : public Person {</code><br><code>public:</code><br>        <code>virtual void BuyTicket() { cout &lt;&lt; &quot;买票-半价&quot; &lt;&lt; endl; }</code><br><code>};</code></p>
+<p><u>虚函数重写的例外：协变</u></p>
+<p>重写的虚函数的返回值可以不同，但是必须分别是基类指针和派生类指针或者基类引用和派生类引用。</p>
+<p><strong>例子：</strong></p>
+<p><code>class Person {</code><br><code>public:</code><br>        <code>virtual A* f() {return new A;}</code><br><code>};</code><br><code>class Student : public Person {</code><br><code>public:</code><br>        <code>virtual B* f() {return new B;}</code><br><code>};</code></p>
+<p><strong>析构函数的重写问题</strong></p>
+<p>​         基类中的析构函数如果是虚函数，那么派生类的析构函数就重写了基类的析构函数。这里他们的函数名不相同，看起来违背了重写的规则，其实不然，这里可以理解为编译器对析构函数的名称做了特殊处理，编译后析构函数的名称统一处理成destructor，这也说明的基类的析构函数最好写成虚函数。</p>
+<p><strong>例子：</strong></p>
+<p><code>class Person {</code><br><code>public:</code><br>         <code>virtual ~Person() {cout &lt;&lt; &quot;~Person()&quot; &lt;&lt; endl;}</code><br><code>};</code><br><code>class Student : public Person {</code><br><code>public:</code><br>      <code>virtual ~Student() { cout &lt;&lt; &quot;~Student()&quot; &lt;&lt; endl; }</code><br><code>};</code><br><code>// 只有派生类Student的析构函数重写了Person的析构函数，下面的delete对象调用析构函数，才能构成多态，才能保证p1和p2指向的对象正确的调用析构函数。</code><br><code>int main()</code><br><code>{</code><br>   <code>Person* p1 = new Person;</code><br>  <code>Person* p2 = new Student;</code><br>   <code>delete p1;</code><br>   <code>delete p2;</code><br>   <code>return 0;</code><br><code>}</code></p>
+<p><strong>接口继承和实现继承</strong></p>
+<p>​    普通函数的继承是一种实现继承，派生类继承了基类函数，可以使用函数，继承的是函数的实现。虚函数的继承是一种接口继承，派生类继承的是基类虚函数的接口，目的是为了重写，达成多态，继承的是接口。所以如果不实现多态，不要把函数定义成虚函数。</p>
+<p>2.重载、覆盖（重写）、隐藏（重定义）的对比</p>
+<p><strong>重载</strong></p>
+<p>1.两个函数在同一个作用域</p>
+<p>2.函数名/参数相同</p>
+<p><strong>重写（覆盖）</strong></p>
+<p>1.两个函数分别在基类和派生类</p>
+<p>2.函数名/参数/返回值都必须相同（协变例外）</p>
+<p>3.两个函数必须是虚函数</p>
+<p><strong>重定义（隐藏）</strong></p>
+<p>1.两个函数分别在基类和派生类作用域</p>
+<p>2.函数名相同</p>
+<p>3.两个基类和派生类的同名函数不构成重写就是重定义</p>
+<p><strong>三.抽象类</strong></p>
+<p>​        在虚函数的后面写上 =0 ，则这个函数为纯虚函数。<strong>包含纯虚函数的类叫做抽象类（也叫接口类），抽象类不能实例化出对象。</strong>派生类继承后也不能实例化出对象，只有重写纯虚函数，派生类才能实例化出对象。纯虚函数规范了派生类必须重写，另外纯虚函数更体现出了接口继承。</p>
+<p><code>class Car</code><br><code>{</code><br><code>public:</code><br>      <code>virtual void Drive() = 0;</code><br><code>};</code><br><code>class Benz :public Car</code><br><code>{</code><br><code>public:</code><br>      <code>virtual void Drive()</code><br>      <code>{</code><br>           <code>cout &lt;&lt; &quot;Benz-舒适&quot; &lt;&lt; endl;</code><br>       <code>}</code><br><code>};</code><br><code>class BMW :public Car</code><br><code>{</code><br><code>public:</code><br>         <code>virtual void Drive()</code><br>         <code>{</code><br>             <code>cout &lt;&lt; &quot;BMW-操控&quot; &lt;&lt; endl;</code><br>          <code>}</code><br><code>};</code><br><code>void Test()</code><br><code>{</code><br>        <code>Car* pBenz = new Benz;</code><br>         <code>pBenz-&gt;Drive();</code><br>        <code>Car* pBMW = new BMW;</code><br>        <code>pBMW-&gt;Drive();</code><br><code>}</code></p>
+<p><strong>C++11 override 和 final</strong></p>
+<p>​        建议多使用纯虚函数+ override的方式来强制重写虚函数，因为虚函数的意义就是实现多态，如果没有重写，虚函数就没有意义。</p>
+<p>1.final修饰基类的虚函数不能被派生类重写</p>
+<p>2.override修饰派生类的虚函数完成重写，如果没有重写会编译报错</p>
+<p><strong>多态的原理</strong></p>
+<p>1.虚基表</p>
+<p><code>class Base</code><br><code>{</code><br><code>public:</code><br><code>virtual void Func1()</code><br><code>{</code><br><code>cout &lt;&lt; &quot;Func1()&quot; &lt;&lt; endl;</code><br><code>}</code><br><code>private:</code><br><code>int _b = 1;</code><br><code>};</code></p>
+<p>计算sizeof(Base)为多少？</p>
+<p>除了_b成员，还多一个__vfptr放在对象的前面(注意有些平台可能会放到对象的最后面，这个跟平台有关)，对象中的这个指针我们叫做虚函数表指针(v代表virtual，f代表function)。所以为8bytes。</p>
+<p><code>class Base</code><br><code>{</code><br><code>public:</code><br>    <code>virtual void Func1()</code><br>    <code>{</code><br>        <code>cout &lt;&lt; &quot;Base::Func1()&quot; &lt;&lt; endl;</code><br>    <code>}</code><br>    <code>virtual void Func2()</code><br>    <code>{</code><br>        <code>cout &lt;&lt; &quot;Base::Func2()&quot; &lt;&lt; endl;</code><br>    <code>}</code><br>    <code>void Func3()</code><br>    <code>{</code><br>        <code>cout &lt;&lt; &quot;Base::Func3()&quot; &lt;&lt; endl;</code><br>    <code>}</code><br><code>private:</code><br>    <code>int _b = 1;</code><br><code>};</code><br><code>class Derive : public Base</code><br><code>{</code><br><code>public:</code><br>    <code>virtual void Func1()</code><br>    <code>{</code><br>        <code>cout &lt;&lt; &quot;Derive::Func1()&quot; &lt;&lt; endl;</code><br>    <code>}</code><br><code>private:</code><br>    <code>int _d = 2;</code><br><code>};</code></p>
+<p><code>int main()</code><br><code>{</code><br>    <code>Base b;</code><br>    <code>Derive d;</code></p>
+<p>​         <code>return 0;</code></p>
+<p><code>}</code></p>
+<p>通过测试发现：</p>
+<ol>
+<li><p>派生类对象d中也有一个虚表指针，d对象由两部分构成，一部分是父类继承下来的成员，虚表指针也就是存在部分的另一部分是自己的成员。</p>
+</li>
+<li><p>基类b对象和派生类d对象虚表是不一样的，这里我们发现Func1完成了重写，所以d的虚表中存的是重写的Derive::Func1，所以虚函数的重写也叫作覆盖，覆盖就是指虚表中虚函数的覆盖。重写是语法的叫法，覆盖是原理层的叫法。</p>
+</li>
+<li><p>另外Func2继承下来后是虚函数，所以放进了虚表，Func3也继承下来了，但是不是虚函数，所以不会放进虚表。</p>
+</li>
+<li><p>虚函数表本质是一个存虚函数指针的指针数组，这个数组最后面放了一个nullptr。</p>
+</li>
+<li><p>总结一下派生类的虚表生成：a.先将基类中的虚表内容拷贝一份到派生类虚表中 b.如果派生类重写了基类中某个虚函数，用派生类自己的虚函数覆盖虚表中基类的虚函数 c.派生类自己新增加的虚函数按其在派生类中的声明次序增加到派生类虚表的最后。</p>
+</li>
+<li><p>虚函数存在哪的？虚表存在哪的？</p>
+<p>答：虚表存的是虚函数指针，不是虚函数，虚函数和普通函数一样的，都是存在代码段的，只是他的指针又存到了虚表中。另外对象中存的不是虚表，存的是虚表指针，vs中虚表是存在代码段的。</p>
+</li>
+</ol>
+<h3 id="多态的原理"><a href="#多态的原理" class="headerlink" title="多态的原理"></a>多态的原理</h3><p><img src="C:\Users\dell\AppData\Local\Temp\1556108099024.png" alt="1556108099024"></p>
+<p>​           1.p中存的是mike对象的指针，将p移动到eax中 </p>
+<p>​           2.[eax]就是取eax值指向的内容，这里相当于把mike对象头4个字节(虚表指针)移动到了edx</p>
+<p>​           3.[edx]就是取edx值指向的内容，这里相当于把虚表中的头4字节存的虚函数指针移动到了eax</p>
+<p>​           4.call eax中存虚函数的指针。这里可以看出满足多态的调用，不是在编译时确定的，是运行起   </p>
+<p>​            来以后到对象中取到的。</p>
+<h5 id="如何实现多态？"><a href="#如何实现多态？" class="headerlink" title="如何实现多态？"></a>如何实现多态？</h5><p> 多态的对象模型：只要类中有虚函数，对象模型就会放一个虚表指针，虚表指针指向虚表，虚表本质上为虚函数指针数组，虚表在vs下存在代码段</p>
+<p>1.本质上是通过虚表实现：程序在运行的时候，根据引用或者指针指向的对象，访问对象模型中虚表指针，获取虚表中对应位置的函数指针，调用对应的函数。</p>
 
             
         </section>
@@ -248,7 +211,7 @@
         
 			
 				
-			<a href="/tags/Linux/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">Linux</a>
+			<a href="/tags/C/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">C++</a>
 				
 			
 		
@@ -258,12 +221,10 @@
     	
     	
 		
-			<a href="/2019/04/24/多态/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="C++多态">上一篇</a>
-		
 
 		
 		
-			<a href="/2019/04/23/继承/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="C++继承">下一篇</a>
+			<a href="/2019/04/23/linux基本操作指令/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="Linux基本操作指令">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -362,7 +323,7 @@
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/23/linux基本操作指令/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/24/多态/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>
