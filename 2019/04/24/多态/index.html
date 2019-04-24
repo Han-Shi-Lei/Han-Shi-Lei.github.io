@@ -196,7 +196,7 @@
 <p>答：虚表存的是虚函数指针，不是虚函数，虚函数和普通函数一样的，都是存在代码段的，只是他的指针又存到了虚表中。另外对象中存的不是虚表，存的是虚表指针，vs中虚表是存在代码段的。</p>
 </li>
 </ol>
-<h3 id="多态的原理"><a href="#多态的原理" class="headerlink" title="多态的原理"></a>多态的原理</h3><p><img src="C:\Users\dell\AppData\Local\Temp\1556108099024.png" alt="1556108099024"></p>
+<h3 id="多态的原理"><a href="#多态的原理" class="headerlink" title="多态的原理"></a>多态的原理</h3><p><img src="https://wx4.sinaimg.cn/mw690/006v1ap6ly1g2e05xknpvj30mj08eju5.jpg" alt="多态原理"></p>
 <p>​           1.p中存的是mike对象的指针，将p移动到eax中 </p>
 <p>​           2.[eax]就是取eax值指向的内容，这里相当于把mike对象头4个字节(虚表指针)移动到了edx</p>
 <p>​           3.[edx]就是取edx值指向的内容，这里相当于把虚表中的头4字节存的虚函数指针移动到了eax</p>
