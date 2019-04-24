@@ -143,32 +143,32 @@
 <li><p><code>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</code></p>
 </li>
 <li><p><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; preorderTraversal(TreeNode* root) {</code></p>
-<pre><code>stack&lt;TreeNode*&gt; st;
-vector&lt;int&gt; v;
-if(root == nullptr){
-    return v;
-}
-if(root != nullptr){
-    //先将跟压到栈中
-    st.push(root);
-    while(!st.empty()){
-        TreeNode* cur = st.top();
-        //取出根并将根尾插到vector中
-        v.push_back(cur-&gt;val);
-        st.pop();
-        //先将cur-&gt;right压到栈中
-        if(cur-&gt;right){
-            st.push(cur-&gt;right);
-        }
-        //再将cur-&gt;left压到栈中，此时cur-&gt;left再栈顶，下次取出
-        //cur-&gt;left尾插到vector中，当左子树全部被取完，然后取右子
-        //树
-        if(cur-&gt;left){
-            st.push(cur-&gt;left);
-        }
-    }
-}
-return v;
+<pre><code> stack&lt;TreeNode*&gt; st;
+ vector&lt;int&gt; v;
+ if(root == nullptr){
+     return v;
+ }
+ if(root != nullptr){
+     //先将跟压到栈中
+     st.push(root);
+     while(!st.empty()){
+         TreeNode* cur = st.top();
+         //取出根并将根尾插到vector中
+         v.push_back(cur-&gt;val);
+         st.pop();
+         //先将cur-&gt;right压到栈中
+         if(cur-&gt;right){
+             st.push(cur-&gt;right);
+         }
+         //再将cur-&gt;left压到栈中，此时cur-&gt;left再栈顶，下次取出
+         //cur-&gt;left尾插到vector中，当左子树全部被取完，然后取右子
+         //树
+         if(cur-&gt;left){
+             st.push(cur-&gt;left);
+         }
+     }
+ }
+ return v;
 </code></pre><p> <code>}</code><br> <code>};</code></p>
 <p> ##题目二：二叉树的中序遍历</p>
 </li>
@@ -185,29 +185,29 @@ return v;
 <li><code>TreeNode *right;</code></li>
 <li><code>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</code></li>
 <li><p><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; inorderTraversal(TreeNode* root) {</code></p>
-<pre><code>stack&lt;TreeNode*&gt; st;
-vector&lt;int&gt; v;
-TreeNode* p = root;
-if(nullptr == root){
-    return v;
-}
-if(nullptr != root){
-    while(p != nullptr || !st.empty()){
-        //p不为空，压入栈中，p走左子树，将左子树全部压到栈中
-        while(p != nullptr){
-            //先压根
-            st.push(p);
-            p = p-&gt;left;
-        }
-        //取出栈顶元素给p，并将栈顶元素取出插入到vector中
-         p = st.top();
-        v.push_back(p-&gt;val);
-        st.pop();
-        //取出p-&gt;right压到栈中
-        p = p-&gt;right;
-    }
-}
-return v;
+<pre><code> stack&lt;TreeNode*&gt; st;
+ vector&lt;int&gt; v;
+ TreeNode* p = root;
+ if(nullptr == root){
+     return v;
+ }
+ if(nullptr != root){
+     while(p != nullptr || !st.empty()){
+         //p不为空，压入栈中，p走左子树，将左子树全部压到栈中
+         while(p != nullptr){
+             //先压根
+             st.push(p);
+             p = p-&gt;left;
+         }
+         //取出栈顶元素给p，并将栈顶元素取出插入到vector中
+          p = st.top();
+         v.push_back(p-&gt;val);
+         st.pop();
+         //取出p-&gt;right压到栈中
+         p = p-&gt;right;
+     }
+ }
+ return v;
 </code></pre><p> <code>}</code><br> <code>};</code></p>
 <p> ##题目三：二叉树的后序遍历</p>
 </li>
@@ -223,36 +223,36 @@ return v;
 <li><code>TreeNode *left;</code></li>
 <li><code>TreeNode *right;</code></li>
 <li><code>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</code></li>
-<li><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; postorderTraversal(TreeNode* root) {</code><pre><code>stack&lt;TreeNode*&gt; s1;
-stack&lt;TreeNode*&gt; s2;
-vector&lt;int&gt; res;
-if(!root){
-    return res;
-}
-s1.push(root);
-while(!s1.empty()){
-    TreeNode* cur = s1.top();
-    s1.pop();
-    s2.push(cur);
-    //先将left压到栈里，再将right压到栈里，然后取出将右子树压到s2
-    //中，最后再压左子树
-    //待右子树全部压完，然后将左子树全部压到栈s2中
-    //此时栈s2从上到下依次是左子树、右子树、根
-    if(cur-&gt;left){
-        s1.push(cur-&gt;left);
-    }
-    //后压右子树，然后全部将有子树压到栈s2中
-    if(cur-&gt;right){
-        s1.push(cur-&gt;right);
-    }
-}
-while(!s2.empty()){
-    //弹出s2栈顶元素，依次尾插到vector中，最终得到二叉树的后序
-    //遍历
-    res.push_back(s2.top()-&gt;val);
-    s2.pop();
-}
-return res;
+<li><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>vector&lt;int&gt; postorderTraversal(TreeNode* root) {</code><pre><code> stack&lt;TreeNode*&gt; s1;
+ stack&lt;TreeNode*&gt; s2;
+ vector&lt;int&gt; res;
+ if(!root){
+     return res;
+ }
+ s1.push(root);
+ while(!s1.empty()){
+     TreeNode* cur = s1.top();
+     s1.pop();
+     s2.push(cur);
+     //先将left压到栈里，再将right压到栈里，然后取出将右子树压到s2
+     //中，最后再压左子树
+     //待右子树全部压完，然后将左子树全部压到栈s2中
+     //此时栈s2从上到下依次是左子树、右子树、根
+     if(cur-&gt;left){
+         s1.push(cur-&gt;left);
+     }
+     //后压右子树，然后全部将有子树压到栈s2中
+     if(cur-&gt;right){
+         s1.push(cur-&gt;right);
+     }
+ }
+ while(!s2.empty()){
+     //弹出s2栈顶元素，依次尾插到vector中，最终得到二叉树的后序
+     //遍历
+     res.push_back(s2.top()-&gt;val);
+     s2.pop();
+ }
+ return res;
 </code></pre> <code>}</code><br> <code>};</code></li>
 </ul>
 
@@ -314,7 +314,7 @@ return res;
                         <div class="row post-donate-content">
                             <div class="col-md-4">
                                 <p>支付宝</p>
-                                <img class="post-donate-content-img no-lightbox" src="http://m.qpic.cn/psb?/7ce056af-318c-43c6-9614-0e158deae4eb/l.qxH6U2SYRIm8g8h3t41lkU*TZuaEbQYN57fJsSAGE!/b/dLYAAAAAAAAA&bo=OASQBgAAAAARB5o!&rf=viewer_4">
+                                <img class="post-donate-content-img no-lightbox" src="https://pan.baidu.com/disk/timeline#/timeline">
                             </div>
                             <div class="col-md-4">
                                 <p>微信</p>
@@ -434,9 +434,9 @@ return res;
                 <ul class="blog-sidebar-tags-ul blog-sidebar-padding">
                   
                     
-                      <li><a href="/tags/Linux/" class="tag-could" data-toggle="tooltip" data-placement="top" title="Linux">Linux</a></li>
-                    
                       <li><a href="/tags/C/" class="tag-could" data-toggle="tooltip" data-placement="top" title="C++">C++</a></li>
+                    
+                      <li><a href="/tags/Linux/" class="tag-could" data-toggle="tooltip" data-placement="top" title="Linux">Linux</a></li>
                     
                   
                 </ul>
