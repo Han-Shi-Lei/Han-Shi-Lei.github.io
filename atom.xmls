@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-04-28T16:50:37.300Z</updated>
+  <updated>2019-04-28T12:29:35.848Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,24 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>ll</title>
-    <link href="http://lovemonths.com/2019/04/29/ll/"/>
-    <id>http://lovemonths.com/2019/04/29/ll/</id>
-    <published>2019-04-28T16:40:08.000Z</published>
-    <updated>2019-04-28T16:50:37.300Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="C++学习" scheme="http://lovemonths.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="c++" scheme="http://lovemonths.com/tags/c/"/>
-    
-  </entry>
   
   <entry>
     <title>Linux权限管理</title>
