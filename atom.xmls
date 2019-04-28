@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-04-28T12:25:00.731Z</updated>
+  <updated>2019-04-28T12:29:35.848Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://lovemonths.com/2019/04/26/Linux%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"/>
     <id>http://lovemonths.com/2019/04/26/Linux权限管理/</id>
     <published>2019-04-26T04:41:32.000Z</published>
-    <updated>2019-04-28T12:25:00.731Z</updated>
+    <updated>2019-04-28T12:29:35.848Z</updated>
     
     <content type="html"><![CDATA[<h4 id="Linux下有两种用户：超级用户（root）、普通用户"><a href="#Linux下有两种用户：超级用户（root）、普通用户" class="headerlink" title="Linux下有两种用户：超级用户（root）、普通用户"></a>Linux下有两种用户：超级用户（root）、普通用户</h4><p>超级用户：在Linux上做任何事情</p><p>普通用户：在Linux上做有限的事情</p><p>超级用户的命令提示符是#，普通用户命令提示符是$</p><h3 id="Linux权限管理"><a href="#Linux权限管理" class="headerlink" title="Linux权限管理"></a>Linux权限管理</h3><p>su切换用户</p><p>任何一个文件具有的权限，针对不同的用户是不一样的，</p><p>第一组    rwx表示的是文件的拥有者的权限</p><p>第二组    rwx表示的是和文件拥有者同组的用户的权限</p><p>第三组    rwx表示的是其他用户的权限</p><h4 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h4><p>d：文件夹</p><p> -：普通文件</p><p> l：软链接（类似Windows的快捷方式）</p><p> b：块设备文件（例如硬盘、光驱等）</p><p> p：管道文件</p><p> c：字符设备文件（例如屏幕等串口设备） </p><p> s：套接口文件 </p><h2 id="chmod命令"><a href="#chmod命令" class="headerlink" title="chmod命令"></a>chmod命令</h2><p>chmod -r 去掉读权限</p><p>chmod +r 加上读权限</p><p>chmod u-r 只对文件拥有者权限更改</p><p>chmod g-r 操作同组用户的权限</p><p>chmod o-r 操作其他用户的权限</p><p>chmod  777[三位八进制的权限] 修改文件权限</p><p>二进制000 110 100</p><p>八进制   0     6      4</p><p>所谓的执行权限是一个程序执行的必要条件，但是不是充要条件</p><h2 id="whereis-能够找到对应指令的可执行程序-sz可以linux文件移动到windows上，​-linux程序只能在linux执行，windows程序只能在windows执行"><a href="#whereis-能够找到对应指令的可执行程序-sz可以linux文件移动到windows上，​-linux程序只能在linux执行，windows程序只能在windows执行" class="headerlink" title="whereis   能够找到对应指令的可执行程序      sz可以linux文件移动到windows上，​ linux程序只能在linux执行，windows程序只能在windows执行"></a>whereis   能够找到对应指令的可执行程序      sz可以linux文件移动到windows上，​ linux程序只能在linux执行，windows程序只能在windows执行</h2>]]></content>
     
