@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>回文链表lovemonths</title>
+  <title>删除排序链表中重复元素lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -111,13 +111,13 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>回文链表</h4>
-    <time datetime="2019-04-29T08:46:29.000Z"><i class="fa fa-clock-o"></i>2019-04-29</time>
+    <h4>删除排序链表中重复元素</h4>
+    <time datetime="2019-04-29T10:15:23.000Z"><i class="fa fa-clock-o"></i>2019-04-29</time>
     
     
     <span>
         <i class="fa fa-eye"></i>
-        <span id="/2019/04/29/回文链表/" class="views views-post" title="回文链表"></span>
+        <span id="/2019/04/29/删除排序链表中重复元素/" class="views views-post" title="删除排序链表中重复元素"></span>
     </span>
     
     
@@ -135,75 +135,21 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>请判断一个链表是否为回文链表</p>
+                <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。 </p>
 <p><strong>示例1：</strong></p>
-<p>输入：1-&gt;2</p>
-<p>输出：false</p>
+<p>输入：1-&gt;1-&gt;2</p>
+<p>输出：1-&gt;2</p>
 <p><strong>示例2：</strong></p>
-<p>输入：1-&gt;2-&gt;2-&gt;1</p>
-<p>输出：true</p>
-<p>在这里我想到了两种做法:</p>
-<p><strong>第一种是快慢指针法，一个指针走一步另一个指针走两步，然后走的慢的指针最后就落到了最中间位置。代码实现如下：</strong></p>
+<p>输入：1-&gt;1-&gt;2-&gt;2-&gt;3-&gt;3</p>
+<p>输出：1-&gt;2-&gt;3</p>
+<p>找两个指针一个在前一个在后，如果链表的元素相等，则更新结点，如果不等则更新node和next节点。代码实现如下：</p>
 <p><code>/**</code></p>
-<ul>
-<li><code>Definition for singly-linked list.</code></li>
-<li><code>struct ListNode {</code></li>
-<li><code>int val;</code></li>
-<li><code>ListNode *next;</code></li>
-<li><code>ListNode(int x) : val(x), next(NULL) {}</code></li>
-<li><p><code>};</code><br> <code>*/</code><br> class Solution {<br> public:<br> bool isPalindrome(ListNode* head) {</p>
-<pre><code> if(head == nullptr || head-&gt;next == nullptr)
-     return true;
- ListNode* p1 = head;
- ListNode* p2 = head;
- //p1走一步，p2走两步
- while(p2 &amp;&amp; p2-&gt;next){
-     p1 = p1-&gt;next;
-     p2 = p2-&gt;next-&gt;next;
- }
- ListNode* node = p1-&gt;next;
- ListNode* next;
- p1-&gt;next = nullptr;
- //重置p1
- while(node){
-     next = node-&gt;next;
-     node-&gt;next = p1;
-     p1 = node;
-     node = next;
- }
- p2 = head;
- //比较两个链表的val是否相等
- while(p1){
-     if(p1-&gt;val != p2-&gt;val)
-         return false;
-     p1 = p1-&gt;next;
-     p2 = p2-&gt;next;
- }
- return true;
-</code></pre><p> }<br> };</p>
-</li>
-</ul>
-<p><strong>第二种就是将链表的所有节点保存到string中，然后将string反转，再将反转之后的string与反转前的string做比较，如果相等则返回true；如果不等则返回false。</strong></p>
-<p><code>/**</code></p>
-<ul>
-<li><code>Definition for singly-linked list.</code></li>
-<li><code>struct ListNode {</code></li>
-<li><code>int val;</code></li>
-<li><code>ListNode *next;</code></li>
-<li><code>ListNode(int x) : val(x), next(NULL) {}</code></li>
-<li><code>};</code><br> <code>*/</code><br> class Solution {<br> public:<br> bool isPalindrome(ListNode* head) {<pre><code> string temp;
- ListNode* p=head;
- while(p != NULL){
-     temp += p-&gt;val;
-     p = p-&gt;next;
- }
- string t = temp;
- reverse(temp.begin(),temp.end());
- if(t == temp)
-     return true;
- return false;
-</code></pre> }<br> };</li>
-</ul>
+<p><code>Definition for singly-linked list.</code></p>
+<p><code>struct ListNode {</code></p>
+<p><code>int val;</code></p>
+<p><code>ListNode *next;</code></p>
+<p><code>ListNode(int x) : val(x), next(NULL) {}</code></p>
+<p><code>};</code><br><code>*/</code><br><code>class Solution {</code><br><code>public:</code><br><code>ListNode* deleteDuplicates(ListNode* head) {</code><br>    <code>if(head == nullptr)</code><br>        <code>return head;</code><br>    <code>ListNode* node = head;</code><br>    <code>ListNode* next = head-&gt;next;</code><br>    <code>while(next != nullptr){</code><br>        <code>if(node-&gt;val == next-&gt;val){</code><br>            <code>next = next-&gt;next;</code><br>            <code>node-&gt;next = next;</code><br>        <code>}</code><br>        <code>else{</code><br>            <code>node = next;</code><br>            <code>next = next-&gt;next;</code><br>        <code>}</code><br>    <code>}</code><br>    <code>return head;</code><br><code>}</code><br><code>};</code> </p>
 
             
         </section>
@@ -221,12 +167,10 @@
     	
     	
 		
-			<a href="/2019/04/29/删除排序链表中重复元素/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="删除排序链表中重复元素">上一篇</a>
-		
 
 		
 		
-			<a href="/2019/04/29/gcc的基本用法和gdb命令行调试/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="gcc的基本用法和gdb命令行调试">下一篇</a>
+			<a href="/2019/04/29/回文链表/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="回文链表">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -325,7 +269,7 @@
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/29/回文链表/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/29/删除排序链表中重复元素/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>
