@@ -151,36 +151,36 @@
 <li><code>int val;</code></li>
 <li><code>ListNode *next;</code></li>
 <li><code>ListNode(int x) : val(x), next(NULL) {}</code></li>
-<li><p><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>bool isPalindrome(ListNode* head) {</code></p>
-<pre><code> `if(head == nullptr || head-&gt;next == nullptr)`
-     `return true;`
- `ListNode* p1 = head;`
- `ListNode* p2 = head;`
- `//p1走一步，p2走两步`
- `while(p2 &amp;&amp; p2-&gt;next){`
-     `p1 = p1-&gt;next;`
-     `p2 = p2-&gt;next-&gt;next;`
- `}`
- `ListNode* node = p1-&gt;next;`
- `ListNode* next;`
- `p1-&gt;next = nullptr;`
- `//重置p1`
- `while(node){`
-     `next = node-&gt;next;`
-     `node-&gt;next = p1;`
-     `p1 = node;`
-     `node = next;`
- `}`
- `p2 = head;`
- `//比较两个链表的val是否相等`
- `while(p1){`
-     `if(p1-&gt;val != p2-&gt;val)`
-         `return false;`
-     `p1 = p1-&gt;next;`
-     `p2 = p2-&gt;next;`
- `}`
- `return true;`
-</code></pre><p> <code>}</code><br> <code>};</code></p>
+<li><p><code>};</code><br> <code>*/</code><br> class Solution {<br> public:<br> bool isPalindrome(ListNode* head) {</p>
+<pre><code> if(head == nullptr || head-&gt;next == nullptr)
+     return true;
+ ListNode* p1 = head;
+ ListNode* p2 = head;
+ //p1走一步，p2走两步
+ while(p2 &amp;&amp; p2-&gt;next){
+     p1 = p1-&gt;next;
+     p2 = p2-&gt;next-&gt;next;
+ }
+ ListNode* node = p1-&gt;next;
+ ListNode* next;
+ p1-&gt;next = nullptr;
+ //重置p1
+ while(node){
+     next = node-&gt;next;
+     node-&gt;next = p1;
+     p1 = node;
+     node = next;
+ }
+ p2 = head;
+ //比较两个链表的val是否相等
+ while(p1){
+     if(p1-&gt;val != p2-&gt;val)
+         return false;
+     p1 = p1-&gt;next;
+     p2 = p2-&gt;next;
+ }
+ return true;
+</code></pre><p> }<br> };</p>
 </li>
 </ul>
 <p><strong>第二种就是将链表的所有节点保存到string中，然后将string反转，再将反转之后的string与反转前的string做比较，如果相等则返回true；如果不等则返回false。</strong></p>
@@ -191,18 +191,18 @@
 <li><code>int val;</code></li>
 <li><code>ListNode *next;</code></li>
 <li><code>ListNode(int x) : val(x), next(NULL) {}</code></li>
-<li><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>bool isPalindrome(ListNode* head) {</code><pre><code> `string temp;`
- `ListNode* p=head;`
- `while(p != NULL){`
-     `temp += p-&gt;val;`
-     `p = p-&gt;next;`
- `}`
- `string t = temp;`
- `reverse(temp.begin(),temp.end());`
- `if(t == temp)`
-     `return true;`
- `return false;`
-</code></pre> <code>}</code><br> <code>};</code></li>
+<li><code>};</code><br> <code>*/</code><br> class Solution {<br> public:<br> bool isPalindrome(ListNode* head) {<pre><code> string temp;
+ ListNode* p=head;
+ while(p != NULL){
+     temp += p-&gt;val;
+     p = p-&gt;next;
+ }
+ string t = temp;
+ reverse(temp.begin(),temp.end());
+ if(t == temp)
+     return true;
+ return false;
+</code></pre> }<br> };</li>
 </ul>
 
             
