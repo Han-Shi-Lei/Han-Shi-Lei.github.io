@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-04-29T06:29:41.171Z</updated>
+  <updated>2019-04-29T09:00:41.835Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,92 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>回文链表</title>
+    <link href="http://lovemonths.com/2019/04/29/%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/"/>
+    <id>http://lovemonths.com/2019/04/29/回文链表/</id>
+    <published>2019-04-29T08:46:29.000Z</published>
+    <updated>2019-04-29T09:00:41.835Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>请判断一个链表是否为回文链表</p><p><strong>示例1：</strong></p><p>输入：1-&gt;2</p><p>输出：false</p><p><strong>示例2：</strong></p><p>输入：1-&gt;2-&gt;2-&gt;1</p><p>输出：true</p><p>在这里我想到了两种做法:</p><p><strong>第一种是快慢指针法，一个指针走一步另一个指针走两步，然后走的慢的指针最后就落到了最中间位置。代码实现如下：</strong></p><p><code>/**</code></p><ul><li><code>Definition for singly-linked list.</code></li><li><code>struct ListNode {</code></li><li><code>int val;</code></li><li><code>ListNode *next;</code></li><li><code>ListNode(int x) : val(x), next(NULL) {}</code></li><li><p><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>bool isPalindrome(ListNode* head) {</code></p><pre><code> `if(head == nullptr || head-&gt;next == nullptr)`     `return true;` `ListNode* p1 = head;` `ListNode* p2 = head;` `//p1走一步，p2走两步` `while(p2 &amp;&amp; p2-&gt;next){`     `p1 = p1-&gt;next;`     `p2 = p2-&gt;next-&gt;next;` `}` `ListNode* node = p1-&gt;next;` `ListNode* next;` `p1-&gt;next = nullptr;` `//重置p1` `while(node){`     `next = node-&gt;next;`     `node-&gt;next = p1;`     `p1 = node;`     `node = next;` `}` `p2 = head;` `//比较两个链表的val是否相等` `while(p1){`     `if(p1-&gt;val != p2-&gt;val)`         `return false;`     `p1 = p1-&gt;next;`     `p2 = p2-&gt;next;` `}` `return true;`</code></pre><p> <code>}</code><br> <code>};</code></p></li></ul><p><strong>第二种就是将链表的所有节点保存到string中，然后将string反转，再将反转之后的string与反转前的string做比较，如果相等则返回true；如果不等则返回false。</strong></p><p><code>/**</code></p><ul><li><code>Definition for singly-linked list.</code></li><li><code>struct ListNode {</code></li><li><code>int val;</code></li><li><code>ListNode *next;</code></li><li><code>ListNode(int x) : val(x), next(NULL) {}</code></li><li><code>};</code><br> <code>*/</code><br> <code>class Solution {</code><br> <code>public:</code><br> <code>bool isPalindrome(ListNode* head) {</code><pre><code> `string temp;` `ListNode* p=head;` `while(p != NULL){`     `temp += p-&gt;val;`     `p = p-&gt;next;` `}` `string t = temp;` `reverse(temp.begin(),temp.end());` `if(t == temp)`     `return true;` `return false;`</code></pre> <code>}</code><br> <code>};</code></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;题目描述&quot;&gt;&lt;a href=&quot;#题目描述&quot; class=&quot;headerlink&quot; title=&quot;题目描述&quot;&gt;&lt;/a&gt;题目描述&lt;/h3&gt;&lt;p&gt;请判断一个链表是否为回文链表&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;示例1：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;输入：1-&amp;gt;2&lt;
+      
+    
+    </summary>
+    
+      <category term="链表（LeetCode）" scheme="http://lovemonths.com/categories/%E9%93%BE%E8%A1%A8%EF%BC%88LeetCode%EF%BC%89/"/>
+    
+    
+      <category term="LeetCode" scheme="http://lovemonths.com/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gcc的基本用法和gdb命令行调试</title>
+    <link href="http://lovemonths.com/2019/04/29/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95%E5%92%8Cgdb%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%B0%83%E8%AF%95/"/>
+    <id>http://lovemonths.com/2019/04/29/gcc的基本用法和gdb命令行调试/</id>
+    <published>2019-04-29T07:13:16.000Z</published>
+    <updated>2019-04-29T07:42:11.401Z</updated>
+    
+    <content type="html"><![CDATA[<p>gcc  test.c</p><p>预处理：头文件替换，宏展开，去掉注释，条件编译，其他预处理命令</p><p>编译：源代码文件转换成汇编代码</p><p>汇编：汇编代码转换成二进制文件</p><p>连接：把所有的二进制文件和依赖的库合并到一起，得到可执行程序</p><p>gcc的基本用法   -&gt;a.out    -o</p><p>-g   编译的时候保留调试信息   VS  debug模式</p><p>在有些场景下，优化可能会导致程序的执行逻辑发生改变（多线程）</p><p><strong>gdb：命令行调试工具</strong></p><p> break/b : 给某个位置的代码打断点，参数可以是一个行号，也可以是一个函数名</p><p>run/r : 开始执行</p><p>print/p : 查看变量内容</p><p>continue/c : 继续执行</p><p>quit/q : 退出gdb</p><p>//info b : 查看断点信息</p><p>next/n : 单步执行（逐过程）</p><p>step/s : 单步执行 (逐语句)</p><p>backtrace/bt:查看函数的调用栈</p><p>frame/f ：切换到某个指定栈桢</p><h5 id="调试一个问题的步骤和思路？"><a href="#调试一个问题的步骤和思路？" class="headerlink" title="调试一个问题的步骤和思路？"></a>调试一个问题的步骤和思路？</h5><p>1、确认是不是bug：唯一依据产品的需求</p><p>2、定位问题，找到哪行代码引起的bug</p><p>3、分析问题的原因</p><p>4、提出方案并进行修改</p><p>5、测试（防止代码引入新的问题）</p><p>ctrl + r能够快速搜索之前敲过的命令</p><p><strong>工作中的用法：</strong></p><p>1、使用gdb调试coredump文件，coredump就是程序临终前的遗言</p><p>ulimit -a</p><p>PID</p><p>2、使用gdb attach（附加）上一个程序</p><p>工程管理工具：解决大型项目中的模块之间的依赖问题。</p><p>make命令的执行过程</p><p>1、先在当前目录中查找Makefile/makefile文件</p><p>2、找到要生成的目标（决定是否要真的生成）</p><p>3、检查依赖的文件是否都存在</p><p>4、执行生成动作的命令</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;gcc  test.c&lt;/p&gt;
+&lt;p&gt;预处理：头文件替换，宏展开，去掉注释，条件编译，其他预处理命令&lt;/p&gt;
+&lt;p&gt;编译：源代码文件转换成汇编代码&lt;/p&gt;
+&lt;p&gt;汇编：汇编代码转换成二进制文件&lt;/p&gt;
+&lt;p&gt;连接：把所有的二进制文件和依赖的库合并到一起，得到可执行程序&lt;/p
+      
+    
+    </summary>
+    
+      <category term="Linux学习" scheme="http://lovemonths.com/categories/Linux%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Linux" scheme="http://lovemonths.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vim的使用</title>
+    <link href="http://lovemonths.com/2019/04/29/vim%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://lovemonths.com/2019/04/29/vim的使用/</id>
+    <published>2019-04-29T06:40:40.000Z</published>
+    <updated>2019-04-29T07:11:42.900Z</updated>
+    
+    <content type="html"><![CDATA[<p>vim [文件]：打开一个文件，不存在就会创建新文件</p><p>:q   退出</p><p>x    删除光标下的字符</p><p>i     进入插入模式，光标在当前位置之前</p><p>A    进入插入模式，光标在行位</p><p>dw  从当前位置</p><p>de   从当前位置删除到单词末尾</p><p>d$   从当前位置删除到行末</p><p>dd   删除一整行</p><p>ctrl+z    切换到后台</p><p>fg <enter>切换回刚才的程序</enter></p><p>u        撤销一处更改    undo</p><p>U        撤销整行的更改</p><p>ctrl+r        redo</p><p>vim  中删除的内容都放在剪贴板（寄存器）中</p><p>p   黏贴剪贴板中的内容</p><p>r    替换光标位置的字符</p><p>c    修改类命令   删除内容的同时进入插入模式</p><p>ctrl + g显示文件状态信息</p><p>G  来到文件末尾</p><p>[number]G跳转到任意指定行</p><p>：[number] 跳转到任意指定行</p><p>gg      来到文件开头</p><p>“         回到上次的位置</p><p>/    进行字符串查找n是查找下一个，N查找上一个</p><p>%   查找到匹配的括号</p><p>:!     这是在vim外部执行一个命令</p><p>o  在当前行的下方创建一个新行，并进入插入模式</p><p>O  在当前行的上方创建一个新行，并进入插入模式</p><p>i   在当前光标的之前进入插入模式</p><p>I   在行首进行插入模式</p><p>a  是在当前光标之后进入插入模式</p><p>A  是在行末进行插入模式</p><p>R  进入替换模式</p><p>v    进入可视模式（选中一段内容）</p><p>y     复制选中的内容</p><p>p   粘贴剪贴板的内容</p><p>：set设置一些编辑器选项   </p><p>：set  monse = a启用鼠标</p><p>：set  num 启用行号</p><p>：set hlsearch高亮搜索结果</p><p>ctrl + s：xshell 冻结当前界面</p><p>ctrl+q：  解除冻结</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;vim [文件]：打开一个文件，不存在就会创建新文件&lt;/p&gt;
+&lt;p&gt;:q   退出&lt;/p&gt;
+&lt;p&gt;x    删除光标下的字符&lt;/p&gt;
+&lt;p&gt;i     进入插入模式，光标在当前位置之前&lt;/p&gt;
+&lt;p&gt;A    进入插入模式，光标在行位&lt;/p&gt;
+&lt;p&gt;dw  从当前位置&lt;/p
+      
+    
+    </summary>
+    
+      <category term="Linux学习" scheme="http://lovemonths.com/categories/Linux%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Linux" scheme="http://lovemonths.com/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux权限管理</title>
