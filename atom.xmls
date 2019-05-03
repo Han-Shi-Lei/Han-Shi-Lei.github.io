@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-05-03T06:07:27.561Z</updated>
+  <updated>2019-05-03T13:07:29.922Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>合并两个有序数组</title>
+    <link href="http://lovemonths.com/2019/05/03/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84/"/>
+    <id>http://lovemonths.com/2019/05/03/合并两个有序数组/</id>
+    <published>2019-05-03T13:03:00.000Z</published>
+    <updated>2019-05-03T13:07:29.922Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定两个有序整数数组nums1 和 nums2,将nums2 合并到 nums1中，使得nums1成为一个有序数组。</p><p><strong>说明：</strong></p><p>初始化nums1和nums2的元素数量分别为m和n。</p><p>假设nums1有足够的空间（空间大小大于或等于m+n）来保存nums2中的元素。</p><p>示例：</p><p>输入：</p><p>nums1 = [1,2,3,0,0,0], m = 3</p><p>nums2 = [2,5,6],           n = 3</p><p>输出：</p><p>[1,2,2,3,5,6]</p><p>思路：因为nums1足够大能保存nums2中的元素，并且nums1和nums2都是有序数组，所以我们可以从最后合并两个数组到num1中。则：last = n + m - 1</p><p>代码实现如下：</p><p><code>class Solution {</code></p><p>​    <code>public:</code>     </p><p>​        <code>void merge(vector&lt;int&gt;&amp; nums1, int m, vector&lt;int&gt;&amp; nums2, int n) {</code>   </p><p>​                  <code>if(m == 0 &amp;&amp; n == 0)</code>            </p><p>​                <code>return；</code></p><pre><code>            `int last = n-- + m-- -1;`                 `while(n&gt;=0 &amp;&amp; m&gt;=0){`     </code></pre><p>​                        <code>if(nums1[m] &gt; nums2[n]){</code>         </p><p>​                            <code>nums1[last--] = nums1[m--];</code>     </p><p>​                       <code>}</code>            </p><p>​                 <code>else{</code>       </p><p>​                          <code>nums1[last--] = nums2[n--];</code>      </p><p>​                      <code>}</code>         </p><pre><code>          `}`  </code></pre><p>​                        <code>//都到这里如果num2没有比较完，则将num2插入到nums1，中</code>       </p><p>​            <code>while(n&gt;=0){</code>    </p><p>​                             <code>nums1[last--] = nums2[n--];</code>         </p><p>​            <code>}</code>     </p><p>​        <code>}</code> </p><p><code>};</code></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;给定两个有序整数数组nums1 和 nums2,将nums2 合并到 nums1中，使得nums1成为一个有序数组。&lt;/p&gt;
+&lt;p&gt;&lt;str
+      
+    
+    </summary>
+    
+      <category term="数组（LeetCode）" scheme="http://lovemonths.com/categories/%E6%95%B0%E7%BB%84%EF%BC%88LeetCode%EF%BC%89/"/>
+    
+    
+      <category term="LeetCode" scheme="http://lovemonths.com/tags/LeetCode/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux下的进度条程序</title>
