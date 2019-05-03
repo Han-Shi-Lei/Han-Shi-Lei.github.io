@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-04-29T10:24:23.671Z</updated>
+  <updated>2019-05-03T06:07:27.561Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux下的进度条程序</title>
+    <link href="http://lovemonths.com/2019/05/03/Linux%E4%B8%8B%E7%9A%84%E8%BF%9B%E5%BA%A6%E6%9D%A1%E7%A8%8B%E5%BA%8F/"/>
+    <id>http://lovemonths.com/2019/05/03/Linux下的进度条程序/</id>
+    <published>2019-05-03T06:06:06.000Z</published>
+    <updated>2019-05-03T06:07:27.561Z</updated>
+    
+    <content type="html"><![CDATA[<p>在Linux环境下写一个会变颜色的进度条程序：</p><p>​    Linux环境下有三种缓冲方式：1.无缓冲 2.行缓冲间 3.全缓冲 C语言中采用的是行缓冲。</p><p>​    \r是回车回到行首，而不会到达下一行，如果继续输出，则会造成覆盖，所以进度条选择用\r输出。</p><p>​    fflush(stdout)是清空缓冲，强制把结果输出到屏幕上。</p><p><code>#include &lt;stdio.h&gt;</code></p><p><code>#include &lt;unistd.h&gt;</code></p><p><code>#include &lt;stdlib.h&gt;</code></p><p><code>int main(){</code><br>    <code>char bar[102];</code><br>     <code>const char s[] = &quot;|/-\\&quot;;</code><br>     <code>memset(bar,0,sizeof(bar));</code><br>     <code>int rate = 0;</code><br>    <code>for(;rate &lt; 101;rate++){</code><br>      <code>if(rate &lt;= 20)</code><br>        <code>printf(&quot;[%d%%][%c]\033[31m[%s]\r&quot;,rate,s[rate%4],bar);</code><br>      <code>else if(rate &lt;= 60)</code><br>        <code>printf(&quot;[%d%%][%c]\033[33m[%s]\r&quot;,rate,s[rate%4],bar);</code><br>      <code>else</code><br>        <code>printf(&quot;[%d%%][%c]\033[32m[%s]\r&quot;,rate,s[rate%4],bar);</code><br>      <code>bar[rate] = &#39;#&#39;;</code><br>      <code>fflush(stdout);</code><br>      <code>usleep(100 * 1000);</code><br>      <code>printf (&quot;\033[0m&quot;);</code><br>    <code>}</code></p><p><code>printf(&quot;\n&quot;);</code></p><p><code>return 0;</code></p><p><code>}</code></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在Linux环境下写一个会变颜色的进度条程序：&lt;/p&gt;
+&lt;p&gt;​    Linux环境下有三种缓冲方式：1.无缓冲 2.行缓冲间 3.全缓冲 C语言中采用的是行缓冲。&lt;/p&gt;
+&lt;p&gt;​    \r是回车回到行首，而不会到达下一行，如果继续输出，则会造成覆盖，所以进度条选择用
+      
+    
+    </summary>
+    
+      <category term="Linux学习" scheme="http://lovemonths.com/categories/Linux%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Linux" scheme="http://lovemonths.com/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>删除排序链表中重复元素</title>

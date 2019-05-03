@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>gcc的基本用法和gdb命令行调试lovemonths</title>
+  <title>Linux下的进度条程序lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -111,13 +111,13 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>gcc的基本用法和gdb命令行调试</h4>
-    <time datetime="2019-04-29T07:13:16.000Z"><i class="fa fa-clock-o"></i>2019-04-29</time>
+    <h4>Linux下的进度条程序</h4>
+    <time datetime="2019-05-03T06:06:06.000Z"><i class="fa fa-clock-o"></i>2019-05-03</time>
     
     
     <span>
         <i class="fa fa-eye"></i>
-        <span id="/2019/04/29/gcc的基本用法和gdb命令行调试/" class="views views-post" title="gcc的基本用法和gdb命令行调试"></span>
+        <span id="/2019/05/03/Linux下的进度条程序/" class="views views-post" title="Linux下的进度条程序"></span>
     </span>
     
     
@@ -135,42 +135,17 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <p>gcc  test.c</p>
-<p>预处理：头文件替换，宏展开，去掉注释，条件编译，其他预处理命令</p>
-<p>编译：源代码文件转换成汇编代码</p>
-<p>汇编：汇编代码转换成二进制文件</p>
-<p>连接：把所有的二进制文件和依赖的库合并到一起，得到可执行程序</p>
-<p>gcc的基本用法   -&gt;a.out    -o</p>
-<p>-g   编译的时候保留调试信息   VS  debug模式</p>
-<p>在有些场景下，优化可能会导致程序的执行逻辑发生改变（多线程）</p>
-<p><strong>gdb：命令行调试工具</strong></p>
-<p> break/b : 给某个位置的代码打断点，参数可以是一个行号，也可以是一个函数名</p>
-<p>run/r : 开始执行</p>
-<p>print/p : 查看变量内容</p>
-<p>continue/c : 继续执行</p>
-<p>quit/q : 退出gdb</p>
-<p>//info b : 查看断点信息</p>
-<p>next/n : 单步执行（逐过程）</p>
-<p>step/s : 单步执行 (逐语句)</p>
-<p>backtrace/bt:查看函数的调用栈</p>
-<p>frame/f ：切换到某个指定栈桢</p>
-<h5 id="调试一个问题的步骤和思路？"><a href="#调试一个问题的步骤和思路？" class="headerlink" title="调试一个问题的步骤和思路？"></a>调试一个问题的步骤和思路？</h5><p>1、确认是不是bug：唯一依据产品的需求</p>
-<p>2、定位问题，找到哪行代码引起的bug</p>
-<p>3、分析问题的原因</p>
-<p>4、提出方案并进行修改</p>
-<p>5、测试（防止代码引入新的问题）</p>
-<p>ctrl + r能够快速搜索之前敲过的命令</p>
-<p><strong>工作中的用法：</strong></p>
-<p>1、使用gdb调试coredump文件，coredump就是程序临终前的遗言</p>
-<p>ulimit -a</p>
-<p>PID</p>
-<p>2、使用gdb attach（附加）上一个程序</p>
-<p>工程管理工具：解决大型项目中的模块之间的依赖问题。</p>
-<p>make命令的执行过程</p>
-<p>1、先在当前目录中查找Makefile/makefile文件</p>
-<p>2、找到要生成的目标（决定是否要真的生成）</p>
-<p>3、检查依赖的文件是否都存在</p>
-<p>4、执行生成动作的命令</p>
+                <p>在Linux环境下写一个会变颜色的进度条程序：</p>
+<p>​    Linux环境下有三种缓冲方式：1.无缓冲 2.行缓冲间 3.全缓冲 C语言中采用的是行缓冲。</p>
+<p>​    \r是回车回到行首，而不会到达下一行，如果继续输出，则会造成覆盖，所以进度条选择用\r输出。</p>
+<p>​    fflush(stdout)是清空缓冲，强制把结果输出到屏幕上。</p>
+<p><code>#include &lt;stdio.h&gt;</code></p>
+<p><code>#include &lt;unistd.h&gt;</code></p>
+<p><code>#include &lt;stdlib.h&gt;</code></p>
+<p><code>int main(){</code><br>    <code>char bar[102];</code><br>     <code>const char s[] = &quot;|/-\\&quot;;</code><br>     <code>memset(bar,0,sizeof(bar));</code><br>     <code>int rate = 0;</code><br>    <code>for(;rate &lt; 101;rate++){</code><br>      <code>if(rate &lt;= 20)</code><br>        <code>printf(&quot;[%d%%][%c]\033[31m[%s]\r&quot;,rate,s[rate%4],bar);</code><br>      <code>else if(rate &lt;= 60)</code><br>        <code>printf(&quot;[%d%%][%c]\033[33m[%s]\r&quot;,rate,s[rate%4],bar);</code><br>      <code>else</code><br>        <code>printf(&quot;[%d%%][%c]\033[32m[%s]\r&quot;,rate,s[rate%4],bar);</code><br>      <code>bar[rate] = &#39;#&#39;;</code><br>      <code>fflush(stdout);</code><br>      <code>usleep(100 * 1000);</code><br>      <code>printf (&quot;\033[0m&quot;);</code><br>    <code>}</code></p>
+<p><code>printf(&quot;\n&quot;);</code></p>
+<p><code>return 0;</code></p>
+<p><code>}</code></p>
 
             
         </section>
@@ -188,12 +163,10 @@
     	
     	
 		
-			<a href="/2019/04/29/回文链表/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="回文链表">上一篇</a>
-		
 
 		
 		
-			<a href="/2019/04/29/vim的使用/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="vim的使用">下一篇</a>
+			<a href="/2019/04/29/删除排序链表中重复元素/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="删除排序链表中重复元素">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -292,7 +265,7 @@
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/04/29/gcc的基本用法和gdb命令行调试/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/03/Linux下的进度条程序/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>
