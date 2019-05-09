@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-05-03T13:07:29.922Z</updated>
+  <updated>2019-05-09T12:18:43.573Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>僵尸进程</title>
+    <link href="http://lovemonths.com/2019/05/09/%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B/"/>
+    <id>http://lovemonths.com/2019/05/09/僵尸进程/</id>
+    <published>2019-05-09T12:16:01.000Z</published>
+    <updated>2019-05-09T12:18:43.573Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="什么是僵尸进程-ZOMBIE-？"><a href="#什么是僵尸进程-ZOMBIE-？" class="headerlink" title="什么是僵尸进程(ZOMBIE)？"></a>什么是僵尸进程(ZOMBIE)？</h4><p>当子进程（child process）先于父进程（parent process）退出，<strong>但是父进程没有调用wait/waitpid回收子进程的资源</strong>，则子进程变成僵尸进程。 </p><p>但是如果该进程的<strong>父进程已经结束，那该进程就不会变成僵尸进程，</strong>因为每个进程结束的时候，系统会扫描所有运行中的进程，看看有没有哪个进程是刚结束的进程的子进程，如果有就由Init来接管他，成为他的父进程。</p><h4 id="僵尸进程的危害是什么？"><a href="#僵尸进程的危害是什么？" class="headerlink" title="僵尸进程的危害是什么？"></a>僵尸进程的危害是什么？</h4><p>（1）进程的退出状态必须被维持下去，因为他要告诉关心它的进程（父进程），你交给我的任务，我办的怎 么样了。可父进程如果一直不读取，那子进程就一直处于Z状态？</p><p><strong>答：是的。</strong></p><p>（2）维护退出状态本身就是要用数据维护，也属于进程基本信息，所以保存在task_struct(PCB)中，换句话 说，Z状态一直不退出，PCB一直都要维护？</p><p><strong>答：是的。</strong></p><p>（3）那一个父进程创建了很多子进程，就是不回收，是不是就会造成内存资源的浪费？</p><p><strong>答：是的。因为数据结构 对象本身就要占用内存，想想C中定义一个结构体变量（对象），是要在内存的某个位置进行开辟空 间</strong></p><p>（4）内存泄漏？</p><p><strong>答：是的</strong></p><h4 id="僵尸进程如何避免？"><a href="#僵尸进程如何避免？" class="headerlink" title="僵尸进程如何避免？"></a>僵尸进程如何避免？</h4><p>1、让僵尸进程的父进程来回收，父进程每隔一段时间来查询子进程是否结束并回收，调用wait()或者waitpid(),通知内核释放僵尸进程 。</p><p>2、采用信号SIGCHLD通知处理，并在信号处理程序中调用wait函数 。</p><p>3、让僵尸进程变成孤儿进程，就是让他的父亲先死。</p><p>4、如果父进程很忙，那么可以用signal函数为SIGCHLD安装handler，因为子进程结束后， 父进程会收到该信号，可以在handler中调用wait回收。 </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;什么是僵尸进程-ZOMBIE-？&quot;&gt;&lt;a href=&quot;#什么是僵尸进程-ZOMBIE-？&quot; class=&quot;headerlink&quot; title=&quot;什么是僵尸进程(ZOMBIE)？&quot;&gt;&lt;/a&gt;什么是僵尸进程(ZOMBIE)？&lt;/h4&gt;&lt;p&gt;当子进程（child pro
+      
+    
+    </summary>
+    
+      <category term="Linux学习" scheme="http://lovemonths.com/categories/Linux%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Linux" scheme="http://lovemonths.com/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>合并两个有序数组</title>
