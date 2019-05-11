@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-05-09T12:18:43.573Z</updated>
+  <updated>2019-05-11T09:59:48.729Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>内存分配和管理</title>
+    <link href="http://lovemonths.com/2019/05/11/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%92%8C%E7%AE%A1%E7%90%86/"/>
+    <id>http://lovemonths.com/2019/05/11/内存分配和管理/</id>
+    <published>2019-05-11T09:33:06.000Z</published>
+    <updated>2019-05-11T09:59:48.729Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="内存分配和管理"><a href="#内存分配和管理" class="headerlink" title="内存分配和管理"></a>内存分配和管理</h4><p>malloc、calloc、realloc、alloca</p><p>1.malloc：申请指定字节数的内存。申请到的内存中的初始值不确定。</p><p>2.calloc: 为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存每一位（bit)都初始化为0。</p><p>3.realloc:更改以前分配的内存长度（增加或减小），当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值不确定。</p><p>4.alloca:在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca不具有可移植性，而且没有在传统堆栈的机器上很难实现。alloca不宜使用在必须广泛移植的程序中。c99中支持变长数组（VLA），可以用来替代alloca。</p><p><strong>malloc        free</strong></p><p>用于分配、释放内存malloc、free使用</p><p>申请内存，确认是否申请成功</p><p><code>char    *str = (char*)malloc(100);</code></p><p>assert(str  !=  nullptr);</p><p>释放内存后指针置空</p><p><code>free(p);</code></p><p><code>p = nullptr;</code></p><p><strong>new         delete</strong></p><p>1.new/new[]:完成两件事，先底层调用malloc分配了内存，然后调用构造函数（创建对象）。</p><p>2.delete/delete[]:也完成两件事，先调用析构函数（清理资源），然后底层调用free释放空间。</p><p>3.new在申请内存时会自动计算所需字节数，而malloc则需要我们自己输入申请内存空间的字节数。</p><p>new      delete使用</p><p><code>int main(){</code></p><p><code>T*    t   = new    T();         //先内存分配，再构造函数</code></p><p><code>delete    t；                     //先析构函数，再内存释放</code></p><p><code>return 0;</code></p><p><code>}</code></p><p><strong>delete    this合法吗？</strong></p><p>合法，但：</p><p>1.必须保证this对象是通过new  （不是new[]、不是placement    new、不是栈上、不是全局、不是其他对象成员）分配的。</p><p>2.必须保证调用delete  this的成员函数是最后一个调用this的成员函数。</p><p>3.必须保证成员函数的delete  this后面没有调用this了。</p><p>4.必须保证delete  this后面没有人使用了。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;内存分配和管理&quot;&gt;&lt;a href=&quot;#内存分配和管理&quot; class=&quot;headerlink&quot; title=&quot;内存分配和管理&quot;&gt;&lt;/a&gt;内存分配和管理&lt;/h4&gt;&lt;p&gt;malloc、calloc、realloc、alloca&lt;/p&gt;
+&lt;p&gt;1.malloc：申请指定字
+      
+    
+    </summary>
+    
+      <category term="面试题" scheme="http://lovemonths.com/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+    
+      <category term="C++面试题" scheme="http://lovemonths.com/tags/C-%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
   
   <entry>
     <title>僵尸进程</title>

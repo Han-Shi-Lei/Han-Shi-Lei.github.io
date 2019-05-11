@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>合并两个有序数组lovemonths</title>
+  <title>内存分配和管理lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -111,13 +111,13 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>合并两个有序数组</h4>
-    <time datetime="2019-05-03T13:03:00.000Z"><i class="fa fa-clock-o"></i>2019-05-03</time>
+    <h4>内存分配和管理</h4>
+    <time datetime="2019-05-11T09:33:06.000Z"><i class="fa fa-clock-o"></i>2019-05-11</time>
     
     
     <span>
         <i class="fa fa-eye"></i>
-        <span id="/2019/05/03/合并两个有序数组/" class="views views-post" title="合并两个有序数组"></span>
+        <span id="/2019/05/11/内存分配和管理/" class="views views-post" title="内存分配和管理"></span>
     </span>
     
     
@@ -125,7 +125,7 @@
 	
         <span><i class="fa fa-folder-o"></i>
     		
-    	       <a href="/categories/数组（LeetCode）/" rel="categories" data-toggle="tooltip" data-placement="top" title="Linux">数组（LeetCode）</a>
+    	       <a href="/categories/面试题/" rel="categories" data-toggle="tooltip" data-placement="top" title="Linux">面试题</a>
     		
         </span>
 	
@@ -135,39 +135,35 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定两个有序整数数组nums1 和 nums2,将nums2 合并到 nums1中，使得nums1成为一个有序数组。</p>
-<p><strong>说明：</strong></p>
-<p>初始化nums1和nums2的元素数量分别为m和n。</p>
-<p>假设nums1有足够的空间（空间大小大于或等于m+n）来保存nums2中的元素。</p>
-<p>示例：</p>
-<p>输入：</p>
-<p>nums1 = [1,2,3,0,0,0], m = 3</p>
-<p>nums2 = [2,5,6],           n = 3</p>
-<p>输出：</p>
-<p>[1,2,2,3,5,6]</p>
-<p>思路：因为nums1足够大能保存nums2中的元素，并且nums1和nums2都是有序数组，所以我们可以从最后合并两个数组到num1中。则：last = n + m - 1</p>
-<p>代码实现如下：</p>
-<p><code>class Solution {</code></p>
-<p>​    <code>public:</code>     </p>
-<p>​        <code>void merge(vector&lt;int&gt;&amp; nums1, int m, vector&lt;int&gt;&amp; nums2, int n) {</code>   </p>
-<p>​                  <code>if(m == 0 &amp;&amp; n == 0)</code>            </p>
-<p>​                <code>return；</code></p>
-<pre><code>            `int last = n-- + m-- -1;`      
-
-           `while(n&gt;=0 &amp;&amp; m&gt;=0){`     
-</code></pre><p>​                        <code>if(nums1[m] &gt; nums2[n]){</code>         </p>
-<p>​                            <code>nums1[last--] = nums1[m--];</code>     </p>
-<p>​                       <code>}</code>            </p>
-<p>​                 <code>else{</code>       </p>
-<p>​                          <code>nums1[last--] = nums2[n--];</code>      </p>
-<p>​                      <code>}</code>         </p>
-<pre><code>          `}`  
-</code></pre><p>​                        <code>//都到这里如果num2没有比较完，则将num2插入到nums1，中</code>       </p>
-<p>​            <code>while(n&gt;=0){</code>    </p>
-<p>​                             <code>nums1[last--] = nums2[n--];</code>         </p>
-<p>​            <code>}</code>     </p>
-<p>​        <code>}</code> </p>
-<p><code>};</code></p>
+                <h4 id="内存分配和管理"><a href="#内存分配和管理" class="headerlink" title="内存分配和管理"></a>内存分配和管理</h4><p>malloc、calloc、realloc、alloca</p>
+<p>1.malloc：申请指定字节数的内存。申请到的内存中的初始值不确定。</p>
+<p>2.calloc: 为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存每一位（bit)都初始化为0。</p>
+<p>3.realloc:更改以前分配的内存长度（增加或减小），当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值不确定。</p>
+<p>4.alloca:在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca不具有可移植性，而且没有在传统堆栈的机器上很难实现。alloca不宜使用在必须广泛移植的程序中。c99中支持变长数组（VLA），可以用来替代alloca。</p>
+<p><strong>malloc        free</strong></p>
+<p>用于分配、释放内存malloc、free使用</p>
+<p>申请内存，确认是否申请成功</p>
+<p><code>char    *str = (char*)malloc(100);</code></p>
+<p>assert(str  !=  nullptr);</p>
+<p>释放内存后指针置空</p>
+<p><code>free(p);</code></p>
+<p><code>p = nullptr;</code></p>
+<p><strong>new         delete</strong></p>
+<p>1.new/new[]:完成两件事，先底层调用malloc分配了内存，然后调用构造函数（创建对象）。</p>
+<p>2.delete/delete[]:也完成两件事，先调用析构函数（清理资源），然后底层调用free释放空间。</p>
+<p>3.new在申请内存时会自动计算所需字节数，而malloc则需要我们自己输入申请内存空间的字节数。</p>
+<p>new      delete使用</p>
+<p><code>int main(){</code></p>
+<p><code>T*    t   = new    T();         //先内存分配，再构造函数</code></p>
+<p><code>delete    t；                     //先析构函数，再内存释放</code></p>
+<p><code>return 0;</code></p>
+<p><code>}</code></p>
+<p><strong>delete    this合法吗？</strong></p>
+<p>合法，但：</p>
+<p>1.必须保证this对象是通过new  （不是new[]、不是placement    new、不是栈上、不是全局、不是其他对象成员）分配的。</p>
+<p>2.必须保证调用delete  this的成员函数是最后一个调用this的成员函数。</p>
+<p>3.必须保证成员函数的delete  this后面没有调用this了。</p>
+<p>4.必须保证delete  this后面没有人使用了。</p>
 
             
         </section>
@@ -175,7 +171,7 @@
         
 			
 				
-			<a href="/tags/LeetCode/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">LeetCode</a>
+			<a href="/tags/C-面试题/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">C++面试题</a>
 				
 			
 		
@@ -185,12 +181,10 @@
     	
     	
 		
-			<a href="/2019/05/09/僵尸进程/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="僵尸进程">上一篇</a>
-		
 
 		
 		
-			<a href="/2019/05/03/Linux下的进度条程序/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="Linux下的进度条程序">下一篇</a>
+			<a href="/2019/05/09/僵尸进程/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="僵尸进程">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -289,7 +283,7 @@
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/03/合并两个有序数组/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/11/内存分配和管理/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>
