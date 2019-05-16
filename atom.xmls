@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-05-13T06:39:29.287Z</updated>
+  <updated>2019-05-16T13:42:45.943Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>智能指针的使用和模拟实现</title>
+    <link href="http://lovemonths.com/2019/05/16/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://lovemonths.com/2019/05/16/智能指针的使用和模拟实现/</id>
+    <published>2019-05-16T13:40:57.000Z</published>
+    <updated>2019-05-16T13:42:45.943Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="智能指针的使用和模拟实现"><a href="#智能指针的使用和模拟实现" class="headerlink" title="智能指针的使用和模拟实现"></a>智能指针的使用和模拟实现</h3><h4 id="RALL"><a href="#RALL" class="headerlink" title="RALL"></a>RALL</h4><p>RALL:是一种利用<strong>对象生命周期</strong>来控制程序资源的简单技术</p><p>在对象构造的时候获取资源，接着控制对资源的访问之在对象生命周期期间内始终保持有效，最后在对象析构的时候释放资源，这样做的好处有两个</p><p>1.不需要显示的释放内存</p><p>2.采用这种方式，对象所需的资源在生命周期内始终有效</p><p>举个例子（抛出异常无法释放内存）</p><pre><code>template&lt;class T&gt;class Smartptr{public:    Smartptr(T* ptr = nullptr)        :_ptr(ptr)    {    }    ~Smartptr()    {        if (_ptr)        {            delete _ptr;            cout &lt;&lt; &quot;delete[] &quot;&lt;&lt; endl;        }    }private:    T* _ptr;};double Division(int a, int b){    if (b == 0)        throw &quot;Division by zero condition!&quot;;    else        return ((double)a / (double)b);}void Func(){    int* array = new int[10];    memset(array, 0, sizeof(int)* 10);    Smartptr&lt;int&gt; s(array);    int len, time;    cin &gt;&gt; len &gt;&gt; time;    cout &lt;&lt; Division(len, time) &lt;&lt; endl;}int main(){    try    {        Func();    }    catch (const char* errmsg)    {        cout &lt;&lt; errmsg &lt;&lt; endl;    }    system(&quot;pause&quot;);    return 0；}</code></pre><h4 id="智能指针的原理"><a href="#智能指针的原理" class="headerlink" title="智能指针的原理"></a>智能指针的原理</h4><p>上述的SmartPtr还不能将其称为智能指针，因为它不具有指针的行为，所以必须重载解引用和-&gt;访问空间所指的内容才构成智能指针。</p><p>即在SmartPtr类中重载：</p><p>T&amp;   operator*（）{</p><p>​    return *_ptr;</p><p>}</p><p>T operator-&gt;(){</p><p>​    return _ptr;</p><p>}</p><h4 id="std-auto-ptr-C-98"><a href="#std-auto-ptr-C-98" class="headerlink" title="std::auto_ptr(C++98)"></a>std::auto_ptr(C++98)</h4><p>c++98库中提供的auto_ptr智能指针当其拷贝后就把元对象的指针悬空了，再通过原指着真访问资源时就会出现问题，所以这种指针不提倡使用。</p><h4 id="std-unique-ptr"><a href="#std-unique-ptr" class="headerlink" title="std::unique_ptr"></a>std::unique_ptr</h4><p>c++11中提供了更靠谱的unique_ptr</p><p>unique_ptr的设计思路简单粗暴就是防止拷贝，下面模拟实现一下它的原理：</p><pre><code>template &lt;class T&gt;class Unique_Ptr{public:    Unique_Ptr(T* ptr)        :_ptr(ptr)    {}    ~Unique_Ptr()    {        if(_ptr)        {            delete _ptr;            _ptr = nullptr;        }    }    //重载*  -&gt;    T&amp; operator*()    {        return *_ptr;    }    T* operator-&gt;()    {        return _ptr;    }private:    Unique_Ptr(const Unique_Ptr&lt;T&gt;&amp; up);    Unique_Ptr&lt;T&gt;&amp; operator=(const Unique_ptr&lt;T&gt;&amp; up);    \*Unique_Ptr(const Unique_Ptr&lt;T&gt;&amp; up)  = delete;    Unique_Ptr&lt;T&gt;&amp; operator=(const Unique_ptr&lt;T&gt;&amp; up) = delete;*/    T* _ptr;}</code></pre><h4 id="std-share-ptr"><a href="#std-share-ptr" class="headerlink" title="std::share_ptr"></a>std::share_ptr</h4><p>C++11中开始提供更靠谱的并且支持拷贝的shared_ptr </p><p>share_ptr的基本原理就是：：是通过引用计数的方式来实现多个shared_ptr对象之间共享资源。</p><ol><li>shared_ptr在其内部，给每个资源都维护了着一份计数，用来记录该份资源被几个对象共享。</li><li>在对象被销毁时(也就是析构函数调用)，就说明自己不使用该资源了，对象的引用计数减一。</li><li>如果引用计数是0，就说明自己是最后一个使用该资源的对象，必须释放该资源； </li><li>如果不是0，就说明除了自己还有其他对象在使用该份资源，不能释放该资源，否则其他对象就成野指 针了。</li></ol><p>模拟实现share_ptr如下：</p><pre><code>template &lt;class T&gt;class Share_Ptr{public:    //构造函数在第一次申请资源后调用    Share_Ptr(T* ptr)        :_ptr(ptr)        ,Use_Count(new int(1))        , _mtx(new mutex)    {}    Share_Ptr(const Share_Ptr&lt;T&gt;&amp; sp)        :_ptr(sp._ptr)        , Use_Count(sp.Use_Count)        , _mtx(sp._mtx)    {        //当前指向资源的引用计数加1        addRef();    }    Share_Ptr&lt;T&gt;&amp; operator=(const Share_Ptr&lt;T&gt;&amp; sp)    {        //对于两个智能指针管理同一片空间的情况，不需要进行赋值        if (_ptr != sp._ptr){            if (subRef() == 0)            {                delete _ptr;                delete Use_Count;                delete _mtx;            }            _ptr = sp._ptr;            Use_Count = sp.Use_Count;            _mtx = sp._mtx;            addRef();        }        return this;    }    int addRef()    {        _mtx-&gt;lock();        ++(*Use_Count);        _mtx-&gt;unlock();        return *Use_Count;    }    int subRef()    {        _mtx-&gt;lock();        --(*Use_Count);        _mtx-&gt;unlock();        return *Use_Count;    }    ~Share_Ptr()    {        if (subRef() == 0)        {            if (_ptr)            {                delete _ptr;                _ptr = nullptr;                delete _mtx;                _mtx = nullptr;                delete Use_Count;                Use_Count = nullptr;            }        }    }    //重载* -&gt;    T&amp; operator*()    {        return *_ptr;    }    T* operator-&gt;()    {        return _ptr;    }    int UseCount()    {        return *Use_Count;    }private:    T* _ptr;    int* Use_Count;    //加锁，给一个全局的锁代价太大    mutex* _mtx;};struct Date{    int _year;    int _month;    int _day;    ~Date()    {        cout &lt;&lt; &quot;~Date()&quot; &lt;&lt; endl;    }};void Fun(const Share_Ptr&lt;Date&gt;&amp; sp,int n){    for (int i = 0; i &lt; n; i++)        Share_Ptr&lt;Date&gt; spcopy(sp);}int main(){    Share_Ptr&lt;Date&gt; sp(new Date);    //Share_Ptr&lt;Date&gt; sp1(sp);    int n = 100000;    thread t1(Fun, sp, n);    thread t2(Fun, sp, n);    t1.join();    t2.join();    cout &lt;&lt; sp.UseCount() &lt;&lt; endl;    system(&quot;pause&quot;);    return 0;}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;智能指针的使用和模拟实现&quot;&gt;&lt;a href=&quot;#智能指针的使用和模拟实现&quot; class=&quot;headerlink&quot; title=&quot;智能指针的使用和模拟实现&quot;&gt;&lt;/a&gt;智能指针的使用和模拟实现&lt;/h3&gt;&lt;h4 id=&quot;RALL&quot;&gt;&lt;a href=&quot;#RALL&quot; cla
+      
+    
+    </summary>
+    
+      <category term="C++学习" scheme="http://lovemonths.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="C++" scheme="http://lovemonths.com/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>分行从上到下打印二叉树</title>
