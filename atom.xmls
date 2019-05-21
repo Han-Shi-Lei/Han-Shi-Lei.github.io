@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-05-16T13:42:45.943Z</updated>
+  <updated>2019-05-21T08:42:51.569Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>匿名管道和命名管道</title>
+    <link href="http://lovemonths.com/2019/05/21/%E5%8C%BF%E5%90%8D%E7%AE%A1%E9%81%93%E5%92%8C%E5%91%BD%E5%90%8D%E7%AE%A1%E9%81%93/"/>
+    <id>http://lovemonths.com/2019/05/21/匿名管道和命名管道/</id>
+    <published>2019-05-21T08:41:58.000Z</published>
+    <updated>2019-05-21T08:42:51.569Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h4><p>功能：创建一条无名管道</p><p>原型：int pipe(int fd[2]);    </p><p>参数：fd：文件描述符数组,其中fd[0]表示读端, fd[1]表示写端 </p><p>返回值:成功返回0，失败返回错误代码   </p><p><strong>管道的读写规则</strong></p><p> 当没有数据可读时</p><p> O_NONBLOCK disable：read调用阻塞，即进程暂停执行，一直等到有数据来到为止。</p><p> O_NONBLOCK enable：read调用返回-1，errno值为EAGAIN。</p><p> 当管道满的时候 </p><p>O_NONBLOCK disable： write调用阻塞，直到有进程读走数据 </p><p>O_NONBLOCK enable：调用返回-1，errno值为EAGAIN</p><p> 如果所有管道写端对应的文件描述符被关闭，则read返回0 </p><p> 如果所有管道读端对应的文件描述符被关闭，则write操作会产生信号SIGPIPE,进而可能导致write进程 退出 </p><p>当要写入的数据量不大于PIPE_BUF时，linux将保证写入的原子性。 </p><p>当要写入的数据量大于PIPE_BUF时，linux将不再保证写入的原子性    </p><p><strong>管道特点</strong></p><p>只能用于具有共同祖先的进程（具有亲缘关系的进程）之间进行通信；通常，一个管道由一个进程创 建，然后该进程调用fork，此后父、子进程之间就可应用该管道。</p><p> 管道提供流式服务 一般而言，进程退出，管道释放，所以管道的生命周期随进程 </p><p>一般而言，内核会对管道操作进行同步与互斥 </p><p>管道是半双工的，数据只能向一个方向流动；需要双方通信时，需要建立起两个管道    </p><h4 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h4><p>命名管道：可以用于任意进程之间的通信（fifo）。</p><p><strong>创建一个命名管道</strong></p><p>命令行创建</p><p>mkfifo filename    </p><p>程序内创建</p><p>int mkfifo(const char *filename,mode_t mode);    </p><p>参数：filename管道文件的路径名，mode管道文件的权限</p><p><strong>命名管道的打开规则</strong></p><p>1、若管道文件没有被以写的方式打开，则以只读打开会阻塞 </p><p>2、若管道文件没有被以读的方式打开，则以只写打开会阻塞 </p><h4 id="匿名管道和命名管道的区别（打开和创建的方式不同）"><a href="#匿名管道和命名管道的区别（打开和创建的方式不同）" class="headerlink" title="匿名管道和命名管道的区别（打开和创建的方式不同）"></a>匿名管道和命名管道的区别（打开和创建的方式不同）</h4><p>1.匿名管道由pipe函数创建并打开</p><p>2.命名管道由mkfifo函数创建，打开用open</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;匿名管道&quot;&gt;&lt;a href=&quot;#匿名管道&quot; class=&quot;headerlink&quot; title=&quot;匿名管道&quot;&gt;&lt;/a&gt;匿名管道&lt;/h4&gt;&lt;p&gt;功能：创建一条无名管道&lt;/p&gt;
+&lt;p&gt;原型：int pipe(int fd[2]);    &lt;/p&gt;
+&lt;p&gt;参数：fd：文件
+      
+    
+    </summary>
+    
+      <category term="Linux学习" scheme="http://lovemonths.com/categories/Linux%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Linux" scheme="http://lovemonths.com/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>智能指针的使用和模拟实现</title>

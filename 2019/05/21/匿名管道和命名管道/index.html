@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>僵尸进程lovemonths</title>
+  <title>匿名管道和命名管道lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -111,13 +111,13 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>僵尸进程</h4>
-    <time datetime="2019-05-09T12:16:01.000Z"><i class="fa fa-clock-o"></i>2019-05-09</time>
+    <h4>匿名管道和命名管道</h4>
+    <time datetime="2019-05-21T08:41:58.000Z"><i class="fa fa-clock-o"></i>2019-05-21</time>
     
     
     <span>
         <i class="fa fa-eye"></i>
-        <span id="/2019/05/09/僵尸进程/" class="views views-post" title="僵尸进程"></span>
+        <span id="/2019/05/21/匿名管道和命名管道/" class="views views-post" title="匿名管道和命名管道"></span>
     </span>
     
     
@@ -135,20 +135,38 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <h4 id="什么是僵尸进程-ZOMBIE-？"><a href="#什么是僵尸进程-ZOMBIE-？" class="headerlink" title="什么是僵尸进程(ZOMBIE)？"></a>什么是僵尸进程(ZOMBIE)？</h4><p>当子进程（child process）先于父进程（parent process）退出，<strong>但是父进程没有调用wait/waitpid回收子进程的资源</strong>，则子进程变成僵尸进程。 </p>
-<p>但是如果该进程的<strong>父进程已经结束，那该进程就不会变成僵尸进程，</strong>因为每个进程结束的时候，系统会扫描所有运行中的进程，看看有没有哪个进程是刚结束的进程的子进程，如果有就由Init来接管他，成为他的父进程。</p>
-<h4 id="僵尸进程的危害是什么？"><a href="#僵尸进程的危害是什么？" class="headerlink" title="僵尸进程的危害是什么？"></a>僵尸进程的危害是什么？</h4><p>（1）进程的退出状态必须被维持下去，因为他要告诉关心它的进程（父进程），你交给我的任务，我办的怎 么样了。可父进程如果一直不读取，那子进程就一直处于Z状态？</p>
-<p><strong>答：是的。</strong></p>
-<p>（2）维护退出状态本身就是要用数据维护，也属于进程基本信息，所以保存在task_struct(PCB)中，换句话 说，Z状态一直不退出，PCB一直都要维护？</p>
-<p><strong>答：是的。</strong></p>
-<p>（3）那一个父进程创建了很多子进程，就是不回收，是不是就会造成内存资源的浪费？</p>
-<p><strong>答：是的。因为数据结构 对象本身就要占用内存，想想C中定义一个结构体变量（对象），是要在内存的某个位置进行开辟空 间</strong></p>
-<p>（4）内存泄漏？</p>
-<p><strong>答：是的</strong></p>
-<h4 id="僵尸进程如何避免？"><a href="#僵尸进程如何避免？" class="headerlink" title="僵尸进程如何避免？"></a>僵尸进程如何避免？</h4><p>1、让僵尸进程的父进程来回收，父进程每隔一段时间来查询子进程是否结束并回收，调用wait()或者waitpid(),通知内核释放僵尸进程 。</p>
-<p>2、采用信号SIGCHLD通知处理，并在信号处理程序中调用wait函数 。</p>
-<p>3、让僵尸进程变成孤儿进程，就是让他的父亲先死。</p>
-<p>4、如果父进程很忙，那么可以用signal函数为SIGCHLD安装handler，因为子进程结束后， 父进程会收到该信号，可以在handler中调用wait回收。 </p>
+                <h4 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h4><p>功能：创建一条无名管道</p>
+<p>原型：int pipe(int fd[2]);    </p>
+<p>参数：fd：文件描述符数组,其中fd[0]表示读端, fd[1]表示写端 </p>
+<p>返回值:成功返回0，失败返回错误代码   </p>
+<p><strong>管道的读写规则</strong></p>
+<p> 当没有数据可读时</p>
+<p> O_NONBLOCK disable：read调用阻塞，即进程暂停执行，一直等到有数据来到为止。</p>
+<p> O_NONBLOCK enable：read调用返回-1，errno值为EAGAIN。</p>
+<p> 当管道满的时候 </p>
+<p>O_NONBLOCK disable： write调用阻塞，直到有进程读走数据 </p>
+<p>O_NONBLOCK enable：调用返回-1，errno值为EAGAIN</p>
+<p> 如果所有管道写端对应的文件描述符被关闭，则read返回0 </p>
+<p> 如果所有管道读端对应的文件描述符被关闭，则write操作会产生信号SIGPIPE,进而可能导致write进程 退出 </p>
+<p>当要写入的数据量不大于PIPE_BUF时，linux将保证写入的原子性。 </p>
+<p>当要写入的数据量大于PIPE_BUF时，linux将不再保证写入的原子性    </p>
+<p><strong>管道特点</strong></p>
+<p>只能用于具有共同祖先的进程（具有亲缘关系的进程）之间进行通信；通常，一个管道由一个进程创 建，然后该进程调用fork，此后父、子进程之间就可应用该管道。</p>
+<p> 管道提供流式服务 一般而言，进程退出，管道释放，所以管道的生命周期随进程 </p>
+<p>一般而言，内核会对管道操作进行同步与互斥 </p>
+<p>管道是半双工的，数据只能向一个方向流动；需要双方通信时，需要建立起两个管道    </p>
+<h4 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h4><p>命名管道：可以用于任意进程之间的通信（fifo）。</p>
+<p><strong>创建一个命名管道</strong></p>
+<p>命令行创建</p>
+<p>mkfifo filename    </p>
+<p>程序内创建</p>
+<p>int mkfifo(const char *filename,mode_t mode);    </p>
+<p>参数：filename管道文件的路径名，mode管道文件的权限</p>
+<p><strong>命名管道的打开规则</strong></p>
+<p>1、若管道文件没有被以写的方式打开，则以只读打开会阻塞 </p>
+<p>2、若管道文件没有被以读的方式打开，则以只写打开会阻塞 </p>
+<h4 id="匿名管道和命名管道的区别（打开和创建的方式不同）"><a href="#匿名管道和命名管道的区别（打开和创建的方式不同）" class="headerlink" title="匿名管道和命名管道的区别（打开和创建的方式不同）"></a>匿名管道和命名管道的区别（打开和创建的方式不同）</h4><p>1.匿名管道由pipe函数创建并打开</p>
+<p>2.命名管道由mkfifo函数创建，打开用open</p>
 
             
         </section>
@@ -166,12 +184,10 @@
     	
     	
 		
-			<a href="/2019/05/11/内存分配和管理/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="内存分配和管理">上一篇</a>
-		
 
 		
 		
-			<a href="/2019/05/03/合并两个有序数组/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="合并两个有序数组">下一篇</a>
+			<a href="/2019/05/16/智能指针的使用和模拟实现/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="智能指针的使用和模拟实现">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -270,7 +286,7 @@
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/09/僵尸进程/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/21/匿名管道和命名管道/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>
