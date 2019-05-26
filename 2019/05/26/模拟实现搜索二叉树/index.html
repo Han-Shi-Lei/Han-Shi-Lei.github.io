@@ -20,7 +20,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" , user-scalable="no"">
-  <title>僵尸进程lovemonths</title>
+  <title>模拟实现搜索二叉树lovemonths</title>
   <link rel="shortcut icon" href>
   
     
@@ -111,13 +111,13 @@
             </header>
                 
 <header class="blog-post-page-title">
-    <h4>僵尸进程</h4>
-    <time datetime="2019-05-09T12:16:01.000Z"><i class="fa fa-clock-o"></i>2019-05-09</time>
+    <h4>模拟实现搜索二叉树</h4>
+    <time datetime="2019-05-26T14:16:29.000Z"><i class="fa fa-clock-o"></i>2019-05-26</time>
     
     
     <span>
         <i class="fa fa-eye"></i>
-        <span id="/2019/05/09/僵尸进程/" class="views views-post" title="僵尸进程"></span>
+        <span id="/2019/05/26/模拟实现搜索二叉树/" class="views views-post" title="模拟实现搜索二叉树"></span>
     </span>
     
     
@@ -125,7 +125,7 @@
 	
         <span><i class="fa fa-folder-o"></i>
     		
-    	       <a href="/categories/Linux学习/" rel="categories" data-toggle="tooltip" data-placement="top" title="Linux">Linux学习</a>
+    	       <a href="/categories/C-学习/" rel="categories" data-toggle="tooltip" data-placement="top" title="Linux">C++学习</a>
     		
         </span>
 	
@@ -135,28 +135,143 @@
     <article class="blog-post-block blog-post-page-content">
         <section>
             
-                <h4 id="什么是僵尸进程-ZOMBIE-？"><a href="#什么是僵尸进程-ZOMBIE-？" class="headerlink" title="什么是僵尸进程(ZOMBIE)？"></a>什么是僵尸进程(ZOMBIE)？</h4><p>当子进程（child process）先于父进程（parent process）退出，<strong>但是父进程没有调用wait/waitpid回收子进程的资源</strong>，则子进程变成僵尸进程。 </p>
-<p>但是如果该进程的<strong>父进程已经结束，那该进程就不会变成僵尸进程，</strong>因为每个进程结束的时候，系统会扫描所有运行中的进程，看看有没有哪个进程是刚结束的进程的子进程，如果有就由Init来接管他，成为他的父进程。</p>
-<h4 id="僵尸进程的危害是什么？"><a href="#僵尸进程的危害是什么？" class="headerlink" title="僵尸进程的危害是什么？"></a>僵尸进程的危害是什么？</h4><p>（1）进程的退出状态必须被维持下去，因为他要告诉关心它的进程（父进程），你交给我的任务，我办的怎 么样了。可父进程如果一直不读取，那子进程就一直处于Z状态？</p>
-<p><strong>答：是的。</strong></p>
-<p>（2）维护退出状态本身就是要用数据维护，也属于进程基本信息，所以保存在task_struct(PCB)中，换句话 说，Z状态一直不退出，PCB一直都要维护？</p>
-<p><strong>答：是的。</strong></p>
-<p>（3）那一个父进程创建了很多子进程，就是不回收，是不是就会造成内存资源的浪费？</p>
-<p><strong>答：是的。因为数据结构 对象本身就要占用内存，想想C中定义一个结构体变量（对象），是要在内存的某个位置进行开辟空 间</strong></p>
-<p>（4）内存泄漏？</p>
-<p><strong>答：是的</strong></p>
-<h4 id="僵尸进程如何避免？"><a href="#僵尸进程如何避免？" class="headerlink" title="僵尸进程如何避免？"></a>僵尸进程如何避免？</h4><p>1、让僵尸进程的父进程来回收，父进程每隔一段时间来查询子进程是否结束并回收，调用wait()或者waitpid(),通知内核释放僵尸进程 。</p>
-<p>2、采用信号SIGCHLD通知处理，并在信号处理程序中调用wait函数 。</p>
-<p>3、让僵尸进程变成孤儿进程，就是让他的父亲先死。</p>
-<p>4、如果父进程很忙，那么可以用signal函数为SIGCHLD安装handler，因为子进程结束后， 父进程会收到该信号，可以在handler中调用wait回收。 </p>
+                <h4 id="模拟实现搜索二叉树"><a href="#模拟实现搜索二叉树" class="headerlink" title="模拟实现搜索二叉树"></a>模拟实现搜索二叉树</h4><pre><code># include &lt;iostream&gt;
 
+using namespace std;
+template &lt;class T&gt;
+struct BSTNode
+{
+    //左右子树构成空
+    BSTNode(const T&amp; val = T())
+    :_data(val)
+    , _pLeft(nullptr)
+    , _pRight(nullptr)
+    {}
+    T _data;
+    BSTNode&lt;T&gt;* _pLeft;
+    BSTNode&lt;T&gt;* _pRight;
+};
+
+template &lt;class T&gt;
+class BSTree
+{
+public:
+    typedef BSTNode&lt;T&gt; Node;
+    typedef Node* pNode;
+
+​
+</code></pre><p>BSTree(const pNode root = nullptr)<br>    :_root(root)<br>{}</p>
+<p>pNode find(const T&amp; val)<br>{<br>    if (_root == nullptr)<br>        return nullptr;<br>    pNode cur = _root;<br>    //递归方法查找<br>    while (cur)<br>    {<br>        if (cur-&gt;_data == val)<br>            return cur;<br>        else if (cur-&gt;data &gt; val)<br>        {<br>            cur = cur-&gt;_pLeft;<br>        }<br>        else<br>        {<br>            cur = cur-&gt;_pRight;<br>        }<br>    }<br>    return nullptr;<br>}</p>
+<p>bool insert(const T&amp; val)<br>{<br>    if (_root == nullptr)<br>    {<br>        //如果树为空，则创建一个新的节点<br>        _root = new Node(val);<br>        return true;<br>    }<br>    pNode cur = _root;<br>    pNode parent = nullptr;<br>    while (cur)<br>    {<br>        //记录一下父母节点<br>        parent = cur;<br>        if (cur-&gt;_data &gt; val)<br>        {<br>            cur = cur-&gt;_pLeft;<br>        }<br>        else if (cur-&gt;_data &lt; val)<br>        {<br>            cur = cur-&gt;_pRight;<br>        }<br>        else<br>            return false;<br>    }</p>
+<pre><code>pNode newNode = new Node(val);
+//如果大于，左插
+if (parent-&gt;_data &gt; val)
+{
+    parent-&gt;_pLeft = newNode;
+}
+//否则右
+else
+    parent-&gt;_pRight = newNode;
+
+return true;
+</code></pre><p>}</p>
+<p>bool erase(const T&amp; val)<br>{<br>    if (_root == nullptr)<br>        return false;<br>    pNode cur = _root;<br>    pNode parent = nullptr;<br>    while (cur)<br>    {<br>        if (cur-&gt;_data == val)<br>            break;<br>        else if (cur-&gt;_data &gt; val)<br>        {<br>            parent = cur;<br>            cur = cur-&gt;_pLeft;<br>        }<br>        else<br>        {<br>            parent = cur;<br>            cur = cur-&gt;_pRight;<br>        }<br>    }</p>
+<pre><code>//删除
+//1. 删除叶子节点
+if (cur-&gt;_pLeft == nullptr &amp;&amp; cur-&gt;_pRight == nullptr)
+{
+    //是否删除_root
+    if (cur != _root)
+    {
+        //让父亲节点对应位置置为空
+        if (parent-&gt;_pLeft == cur)
+            parent-&gt;_pLeft = nullptr;
+        else
+            parent-&gt;_pRight = nullptr;
+    }
+    else
+    {
+        //删除_root, 树为空
+        _root = nullptr;
+    }
+    delete cur;
+    cur = nullptr;
+}
+//如果cur的左边为空，则只更新cur的右边
+else if (cur-&gt;_pLeft == nullptr)
+{
+    if (cur != _root)
+    {
+        //确定当前节点在父亲节点的左边还是右边，对应位置设为cur-&gt;_pRight
+        if (parent-&gt;_pLeft == cur)
+            parent-&gt;_pLeft = cur-&gt;_pRight;
+        else
+            parent-&gt;_pRight = cur-&gt;_pRight;
+    }
+    else
+    {
+        //更新_root
+        _root = _root-&gt;_pRight;
+    }
+    delete cur;
+    cur = nullptr;
+}
+//如果右边为空则只更新cur的左边
+else if (cur-&gt;_pRight == nullptr)
+{
+    if (cur != _root)
+    {
+        if (parent-&gt;_pLeft == cur)
+            parent-&gt;_pLeft = cur-&gt;_pLeft;
+        else
+            parent-&gt;_pRight = cur-&gt;_pLeft;
+    }
+    else
+    {
+        _root = _root-&gt;_pLeft;
+    }
+    delete cur;
+    cur = nullptr;
+}
+//找左边最大的，或者找右边最小的
+else
+{
+    //cur 左右孩子都存在
+    //1. 寻找替换节点
+    pNode pNext = cur-&gt;_pLeft;  // 3   5
+    parent = cur;
+    while (pNext-&gt;_pRight)
+    {
+        parent = pNext;  // 3  4
+        pNext = pNext-&gt;_pRight;
+    }
+
+    //2. 置换
+    cur-&gt;_data = pNext-&gt;_data;
+    //指向置换节点的指针置空
+    if (parent-&gt;_pRight == pNext)
+        parent-&gt;_pRight = nullptr;
+    parent-&gt;_pLeft = nullptr;
+
+    //3. 删除置换节点
+    delete pNext;
+    pNext = nullptr;
+}
+return true;
+</code></pre><p>}</p>
+<p>void Inorder()<br>{<br>    _Inorder(_root);<br>    cout &lt;&lt; endl;<br>}<br>//中序遍历<br>void _Inorder(pNode root)<br>{<br>    if (root)<br>    {<br>        _Inorder(root-&gt;_pLeft);<br>        cout &lt;&lt; root-&gt;_data &lt;&lt; “ “;<br>        _Inorder(root-&gt;_pRight);<br>    }<br>}</p>
+<p>~BSTree()<br>{<br>    Distory(_root);<br>}</p>
+<p>void Distory(pNode root)<br>{<br>    if (root)<br>    {<br>        Distory(root-&gt;_pLeft);<br>        Distory(root-&gt;_pRight);<br>        delete root;<br>        root = nullptr;<br>    }<br>}<br>​<code>`</code></p>
+<p>private:<br>    pNode _root;<br>};</p>
+<p>void testTree()<br>{<br>    BSTree<int> bt;<br>    bt.insert(5);<br>    //bt.Inorder();<br>    bt.insert(3);<br>    //bt.Inorder();<br>    bt.insert(4);<br>    //bt.Inorder();<br>    bt.insert(1);<br>    //bt.Inorder();<br>    bt.insert(0);<br>    //bt.Inorder();<br>    bt.insert(2);<br>    //bt.Inorder();<br>    bt.insert(7);<br>    //bt.Inorder();<br>    bt.insert(6);<br>    //bt.Inorder();<br>    bt.insert(8);<br>    bt.insert(9);<br>    bt.Inorder();<br>    bt.erase(4);<br>    bt.Inorder();<br>    bt.erase(8);<br>    bt.Inorder();<br>    bt.erase(0);<br>    bt.Inorder();<br>    bt.erase(1);<br>    bt.Inorder();<br>    bt.erase(2);<br>    bt.Inorder();<br>    bt.erase(5);<br>    bt.Inorder();<br>    bt.erase(3);<br>    bt.Inorder();<br>    bt.erase(7);<br>    bt.Inorder();<br>    bt.erase(6);<br>    bt.Inorder();<br>    bt.erase(9);<br>    bt.Inorder();<br>}<br>int main()<br>{<br>    testTree();<br>    system(“pause”);<br>    return 0;<br>}<br><code>`</code></int></p>
+<h4 id="最优情况下，二叉搜索树为完全二叉树，其平均比较次数为：-log2N"><a href="#最优情况下，二叉搜索树为完全二叉树，其平均比较次数为：-log2N" class="headerlink" title="最优情况下，二叉搜索树为完全二叉树，其平均比较次数为： log2N"></a>最优情况下，二叉搜索树为完全二叉树，其平均比较次数为： log2N</h4><h4 id="最差情况下，二叉搜索树退化为单支树，其平均比较次数为：-N-2"><a href="#最差情况下，二叉搜索树退化为单支树，其平均比较次数为：-N-2" class="headerlink" title="最差情况下，二叉搜索树退化为单支树，其平均比较次数为：    N/2"></a>最差情况下，二叉搜索树退化为单支树，其平均比较次数为：    N/2</h4>
             
         </section>
         <footer class="blog-post-page-tags">
         
 			
 				
-			<a href="/tags/Linux/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">Linux</a>
+			<a href="/tags/C/" rel="tag" data-toggle="tooltip" data-placement="top" title="Linux">C++</a>
 				
 			
 		
@@ -166,12 +281,10 @@
     	
     	
 		
-			<a href="/2019/05/11/内存分配和管理/" class="blog-post-page-readmore-prev" data-toggle="tooltip" data-placement="top" title="内存分配和管理">上一篇</a>
-		
 
 		
 		
-			<a href="/2019/05/03/合并两个有序数组/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="合并两个有序数组">下一篇</a>
+			<a href="/2019/05/21/匿名管道和命名管道/" class="blog-post-page-readmore-next" data-toggle="tooltip" data-placement="top" title="匿名管道和命名管道">下一篇</a>
 		
 
         <div style="clear: both;"></div>
@@ -270,7 +383,7 @@
                 return out;
             }
             // 生成
-            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/09/僵尸进程/")}).hide();
+            var qrcode= $('.post-qrcode-content-canvas').qrcode({width: 150,height: 150,text: toUtf8("http://lovemonths.com/2019/05/26/模拟实现搜索二叉树/")}).hide();
             var canvas=qrcode.find('canvas').get(0);
             $('.post-qrcode-content-img').attr('src',canvas.toDataURL('image/jpg'));
         </script>

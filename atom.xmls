@@ -6,7 +6,7 @@
   <link href="/atom.xmls" rel="self"/>
   
   <link href="http://lovemonths.com/"/>
-  <updated>2019-05-21T08:42:51.569Z</updated>
+  <updated>2019-05-26T14:18:24.584Z</updated>
   <id>http://lovemonths.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>模拟实现搜索二叉树</title>
+    <link href="http://lovemonths.com/2019/05/26/%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
+    <id>http://lovemonths.com/2019/05/26/模拟实现搜索二叉树/</id>
+    <published>2019-05-26T14:16:29.000Z</published>
+    <updated>2019-05-26T14:18:24.584Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="模拟实现搜索二叉树"><a href="#模拟实现搜索二叉树" class="headerlink" title="模拟实现搜索二叉树"></a>模拟实现搜索二叉树</h4><pre><code># include &lt;iostream&gt;using namespace std;template &lt;class T&gt;struct BSTNode{    //左右子树构成空    BSTNode(const T&amp; val = T())    :_data(val)    , _pLeft(nullptr)    , _pRight(nullptr)    {}    T _data;    BSTNode&lt;T&gt;* _pLeft;    BSTNode&lt;T&gt;* _pRight;};template &lt;class T&gt;class BSTree{public:    typedef BSTNode&lt;T&gt; Node;    typedef Node* pNode;​</code></pre><p>BSTree(const pNode root = nullptr)<br>    :_root(root)<br>{}</p><p>pNode find(const T&amp; val)<br>{<br>    if (_root == nullptr)<br>        return nullptr;<br>    pNode cur = _root;<br>    //递归方法查找<br>    while (cur)<br>    {<br>        if (cur-&gt;_data == val)<br>            return cur;<br>        else if (cur-&gt;data &gt; val)<br>        {<br>            cur = cur-&gt;_pLeft;<br>        }<br>        else<br>        {<br>            cur = cur-&gt;_pRight;<br>        }<br>    }<br>    return nullptr;<br>}</p><p>bool insert(const T&amp; val)<br>{<br>    if (_root == nullptr)<br>    {<br>        //如果树为空，则创建一个新的节点<br>        _root = new Node(val);<br>        return true;<br>    }<br>    pNode cur = _root;<br>    pNode parent = nullptr;<br>    while (cur)<br>    {<br>        //记录一下父母节点<br>        parent = cur;<br>        if (cur-&gt;_data &gt; val)<br>        {<br>            cur = cur-&gt;_pLeft;<br>        }<br>        else if (cur-&gt;_data &lt; val)<br>        {<br>            cur = cur-&gt;_pRight;<br>        }<br>        else<br>            return false;<br>    }</p><pre><code>pNode newNode = new Node(val);//如果大于，左插if (parent-&gt;_data &gt; val){    parent-&gt;_pLeft = newNode;}//否则右else    parent-&gt;_pRight = newNode;return true;</code></pre><p>}</p><p>bool erase(const T&amp; val)<br>{<br>    if (_root == nullptr)<br>        return false;<br>    pNode cur = _root;<br>    pNode parent = nullptr;<br>    while (cur)<br>    {<br>        if (cur-&gt;_data == val)<br>            break;<br>        else if (cur-&gt;_data &gt; val)<br>        {<br>            parent = cur;<br>            cur = cur-&gt;_pLeft;<br>        }<br>        else<br>        {<br>            parent = cur;<br>            cur = cur-&gt;_pRight;<br>        }<br>    }</p><pre><code>//删除//1. 删除叶子节点if (cur-&gt;_pLeft == nullptr &amp;&amp; cur-&gt;_pRight == nullptr){    //是否删除_root    if (cur != _root)    {        //让父亲节点对应位置置为空        if (parent-&gt;_pLeft == cur)            parent-&gt;_pLeft = nullptr;        else            parent-&gt;_pRight = nullptr;    }    else    {        //删除_root, 树为空        _root = nullptr;    }    delete cur;    cur = nullptr;}//如果cur的左边为空，则只更新cur的右边else if (cur-&gt;_pLeft == nullptr){    if (cur != _root)    {        //确定当前节点在父亲节点的左边还是右边，对应位置设为cur-&gt;_pRight        if (parent-&gt;_pLeft == cur)            parent-&gt;_pLeft = cur-&gt;_pRight;        else            parent-&gt;_pRight = cur-&gt;_pRight;    }    else    {        //更新_root        _root = _root-&gt;_pRight;    }    delete cur;    cur = nullptr;}//如果右边为空则只更新cur的左边else if (cur-&gt;_pRight == nullptr){    if (cur != _root)    {        if (parent-&gt;_pLeft == cur)            parent-&gt;_pLeft = cur-&gt;_pLeft;        else            parent-&gt;_pRight = cur-&gt;_pLeft;    }    else    {        _root = _root-&gt;_pLeft;    }    delete cur;    cur = nullptr;}//找左边最大的，或者找右边最小的else{    //cur 左右孩子都存在    //1. 寻找替换节点    pNode pNext = cur-&gt;_pLeft;  // 3   5    parent = cur;    while (pNext-&gt;_pRight)    {        parent = pNext;  // 3  4        pNext = pNext-&gt;_pRight;    }    //2. 置换    cur-&gt;_data = pNext-&gt;_data;    //指向置换节点的指针置空    if (parent-&gt;_pRight == pNext)        parent-&gt;_pRight = nullptr;    parent-&gt;_pLeft = nullptr;    //3. 删除置换节点    delete pNext;    pNext = nullptr;}return true;</code></pre><p>}</p><p>void Inorder()<br>{<br>    _Inorder(_root);<br>    cout &lt;&lt; endl;<br>}<br>//中序遍历<br>void _Inorder(pNode root)<br>{<br>    if (root)<br>    {<br>        _Inorder(root-&gt;_pLeft);<br>        cout &lt;&lt; root-&gt;_data &lt;&lt; “ “;<br>        _Inorder(root-&gt;_pRight);<br>    }<br>}</p><p>~BSTree()<br>{<br>    Distory(_root);<br>}</p><p>void Distory(pNode root)<br>{<br>    if (root)<br>    {<br>        Distory(root-&gt;_pLeft);<br>        Distory(root-&gt;_pRight);<br>        delete root;<br>        root = nullptr;<br>    }<br>}<br>​<code>`</code></p><p>private:<br>    pNode _root;<br>};</p><p>void testTree()<br>{<br>    BSTree<int> bt;<br>    bt.insert(5);<br>    //bt.Inorder();<br>    bt.insert(3);<br>    //bt.Inorder();<br>    bt.insert(4);<br>    //bt.Inorder();<br>    bt.insert(1);<br>    //bt.Inorder();<br>    bt.insert(0);<br>    //bt.Inorder();<br>    bt.insert(2);<br>    //bt.Inorder();<br>    bt.insert(7);<br>    //bt.Inorder();<br>    bt.insert(6);<br>    //bt.Inorder();<br>    bt.insert(8);<br>    bt.insert(9);<br>    bt.Inorder();<br>    bt.erase(4);<br>    bt.Inorder();<br>    bt.erase(8);<br>    bt.Inorder();<br>    bt.erase(0);<br>    bt.Inorder();<br>    bt.erase(1);<br>    bt.Inorder();<br>    bt.erase(2);<br>    bt.Inorder();<br>    bt.erase(5);<br>    bt.Inorder();<br>    bt.erase(3);<br>    bt.Inorder();<br>    bt.erase(7);<br>    bt.Inorder();<br>    bt.erase(6);<br>    bt.Inorder();<br>    bt.erase(9);<br>    bt.Inorder();<br>}<br>int main()<br>{<br>    testTree();<br>    system(“pause”);<br>    return 0;<br>}<br><code>`</code></int></p><h4 id="最优情况下，二叉搜索树为完全二叉树，其平均比较次数为：-log2N"><a href="#最优情况下，二叉搜索树为完全二叉树，其平均比较次数为：-log2N" class="headerlink" title="最优情况下，二叉搜索树为完全二叉树，其平均比较次数为： log2N"></a>最优情况下，二叉搜索树为完全二叉树，其平均比较次数为： log2N</h4><h4 id="最差情况下，二叉搜索树退化为单支树，其平均比较次数为：-N-2"><a href="#最差情况下，二叉搜索树退化为单支树，其平均比较次数为：-N-2" class="headerlink" title="最差情况下，二叉搜索树退化为单支树，其平均比较次数为：    N/2"></a>最差情况下，二叉搜索树退化为单支树，其平均比较次数为：    N/2</h4>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;模拟实现搜索二叉树&quot;&gt;&lt;a href=&quot;#模拟实现搜索二叉树&quot; class=&quot;headerlink&quot; title=&quot;模拟实现搜索二叉树&quot;&gt;&lt;/a&gt;模拟实现搜索二叉树&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;# include &amp;lt;iostream&amp;gt;
+
+using 
+      
+    
+    </summary>
+    
+      <category term="C++学习" scheme="http://lovemonths.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="C++" scheme="http://lovemonths.com/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>匿名管道和命名管道</title>
